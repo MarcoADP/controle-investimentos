@@ -1,6 +1,5 @@
 package com.github.marcoadp.controle_investimentos.mapper;
 
-import com.github.marcoadp.controle_investimentos.dto.request.SetorRequest;
 import com.github.marcoadp.controle_investimentos.entity.Setor;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -10,11 +9,10 @@ import java.util.List;
 import static com.github.marcoadp.controle_investimentos.stub.SetorStub.getSetor;
 import static com.github.marcoadp.controle_investimentos.stub.SetorStub.getSetorRequest;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SetorMapperTest {
 
-    private SetorMapper setorMapper = Mappers.getMapper(SetorMapper.class);
+    private final SetorMapper setorMapper = Mappers.getMapper(SetorMapper.class);
 
     @Test
     void toSetor() {

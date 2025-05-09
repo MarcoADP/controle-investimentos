@@ -68,7 +68,7 @@ class SetorServiceImplTest {
         when(setorRepository.findAll()).thenReturn(List.of(setorMock));
         var setores = setorService.listar();
         assertThat(setores).hasSize(1);
-        assertSetor(setores.get(0), setorMock);
+        assertSetor(setores.getFirst(), setorMock);
     }
 
     private static void assertSetor(Setor setor, Setor setorMock) {
