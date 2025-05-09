@@ -21,4 +21,7 @@ public class Setor {
     @Column
     private String nome;
 
+    public Setor(String nome) {
+        this.nome = nome;
+    }
 }
