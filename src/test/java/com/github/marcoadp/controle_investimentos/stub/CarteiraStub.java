@@ -26,4 +26,16 @@ public class CarteiraStub {
         return new CarteiraResponse("Carteira", "Carteira de Ativos", List.of(ativo));
     }
 
+    public static final String CARTEIRA_REQUEST_JSON = """
+            {
+                "nome": "Carteira",
+                "descricao": "Carteira de Ativos",
+                "ativos": [
+                    {
+                        "codigo": "ACAO4"
+                    }
+                ]
+            }";
+    """;
+
 }
