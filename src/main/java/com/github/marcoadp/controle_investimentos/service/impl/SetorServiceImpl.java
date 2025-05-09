@@ -27,11 +27,8 @@ public class SetorServiceImpl implements SetorService {
     @Override
     public Setor atualizar(Long id, SetorRequest setorRequest) {
         var setor = setorRepository.findById(id).orElseThrow(() -> new NotFoundException("Setor", id));
-        if (setor != null) {
-            setorMapper.updateSetor(setorRequest, setor);
-            setor = setorRepository.save(setor);
-        }
-        return setor;
+        setorMapper.updateSetor(setorRequest, setor);
+        return setorRepository.save(setor);
     }
 
     @Override

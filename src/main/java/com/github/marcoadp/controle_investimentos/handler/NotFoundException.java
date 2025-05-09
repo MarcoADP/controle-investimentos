@@ -6,4 +6,8 @@ public class NotFoundException extends RuntimeException{
         super("%s #%s não encontrado".formatted(classe, id));
     }
 
+    public NotFoundException(String classe, String descricao) {
+        super("%s: %s não encontrado".formatted(classe, descricao));
+    }
+
 }
