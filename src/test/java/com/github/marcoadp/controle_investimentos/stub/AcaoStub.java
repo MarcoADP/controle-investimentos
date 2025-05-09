@@ -21,4 +21,13 @@ public class AcaoStub {
         return new AcaoResponse("Acao", "ACAO4", "26492737000162", getSetor().getNome());
     }
 
+    public static final String ACAO_REQUEST_JSON = """
+        {
+            "nome": "Acao",
+            "codigo": "ACAO4",
+            "cnpj": "26492737000162",
+            "setorId": "1"
+        }";
+    """;
+
 }
