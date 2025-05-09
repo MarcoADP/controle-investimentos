@@ -1,10 +1,7 @@
 package com.github.marcoadp.controle_investimentos.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
 @RequiredArgsConstructor
@@ -18,15 +15,19 @@ public class Acao {
     @Column(name = "acao_id")
     private Long id;
 
+    @Setter
     @Column
     private String nome;
 
+    @Setter
     @Column
     private String codigo;
 
+    @Setter
     @Column
     private String cnpj;
 
+    @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "setor_id")
     private Setor setor;
