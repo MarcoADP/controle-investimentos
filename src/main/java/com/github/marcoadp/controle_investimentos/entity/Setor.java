@@ -1,6 +1,7 @@
 package com.github.marcoadp.controle_investimentos.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Setor {
 
     @Id
