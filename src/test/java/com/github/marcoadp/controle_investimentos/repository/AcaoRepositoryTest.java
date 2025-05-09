@@ -54,7 +54,12 @@ class AcaoRepositoryTest {
 
     private Acao criarAcao() {
         var setor = new Setor("Setor");
-        var acao = new Acao("Acao", "ACAO4", "26492737000162", setor);
+        var acao = Acao.builder()
+                .nome("Acao")
+                .codigo("ACAO4")
+                .cnpj("26492737000162")
+                .setor(setor)
+                .build();
         return acaoRepository.save(acao);
     }
 

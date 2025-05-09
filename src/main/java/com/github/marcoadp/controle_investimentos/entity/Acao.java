@@ -2,6 +2,7 @@ package com.github.marcoadp.controle_investimentos.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity(name = "acao_br")
+@Builder
 public class Acao {
 
     @Id
@@ -29,11 +31,4 @@ public class Acao {
     @JoinColumn(name = "setor_id")
     private Setor setor;
 
-
-    public Acao(String nome, String codigo, String cnpj, Setor setor) {
-        this.nome = nome;
-        this.codigo = codigo;
-        this.cnpj = cnpj;
-        this.setor = setor;
-    }
 }
