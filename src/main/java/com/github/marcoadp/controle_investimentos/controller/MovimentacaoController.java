@@ -23,6 +23,12 @@ public class MovimentacaoController {
         return movimentacaoMapper.toMovimentacaoResponse(movimentacao);
     }
 
+    @PostMapping("/lote")
+    public List<MovimentacaoResponse> criarEmLote(@RequestBody List<MovimentacaoRequest> movimentacaoRequests) {
+        var movimentacoes = movimentacaoService.criarEmLote(movimentacaoRequests);
+        return movimentacoes.stream().map(movimentacaoMapper::toMovimentacaoResponse).toList();
+    }
+
     @GetMapping("/{id}")
     public MovimentacaoResponse buscarPeloId(@PathVariable Long id) {
         var movimentacao = movimentacaoService.buscarPeloId(id);

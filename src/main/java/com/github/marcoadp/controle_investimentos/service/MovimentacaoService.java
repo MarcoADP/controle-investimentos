@@ -15,4 +15,5 @@ public interface MovimentacaoService {
 
     void remover(Long id);
 
+    List<Movimentacao> criarEmLote(List<MovimentacaoRequest> movimentacaoRequests);
 }

@@ -25,6 +25,11 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     @Override
+    public List<Movimentacao> criarEmLote(List<MovimentacaoRequest> movimentacaoRequests) {
+        return movimentacaoRequests.stream().map(this::criar).toList();
+    }
+
+    @Override
     public Movimentacao buscarPeloId(Long id) {
         return movimentacaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Movimentação", id));
     }
