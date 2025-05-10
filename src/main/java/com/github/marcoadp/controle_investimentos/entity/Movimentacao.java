@@ -1,5 +1,6 @@
 package com.github.marcoadp.controle_investimentos.entity;
 
+import com.github.marcoadp.controle_investimentos.entity.converter.TipoAtivoEnumConverter;
 import com.github.marcoadp.controle_investimentos.enums.OperacaoEnum;
 import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import jakarta.persistence.*;
@@ -34,7 +35,7 @@ public class Movimentacao {
     private String codigo;
 
     @Column(name = "tipo_ativo")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = TipoAtivoEnumConverter.class)
     private TipoAtivoEnum tipoAtivo;
 
     @Column

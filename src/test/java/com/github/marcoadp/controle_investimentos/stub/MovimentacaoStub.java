@@ -28,7 +28,7 @@ public class MovimentacaoStub {
                 .data(LocalDate.of(2025,1, 1))
                 .operacao(OperacaoEnum.ENTRADA)
                 .codigo("ACAO4")
-                .tipoAtivo(TipoAtivoEnum.ACAO)
+                .tipoAtivo(TipoAtivoEnum.ACAO.getDescricao())
                 .quantidade(BigDecimal.TEN)
                 .valorUnitario(BigDecimal.ONE)
                 .build();
@@ -39,7 +39,7 @@ public class MovimentacaoStub {
                 .data(LocalDate.of(2025,1, 1))
                 .operacao(OperacaoEnum.ENTRADA)
                 .codigo("ACAO4")
-                .tipoAtivo(TipoAtivoEnum.ACAO)
+                .tipoAtivo(TipoAtivoEnum.ACAO.getDescricao())
                 .quantidade(BigDecimal.TEN)
                 .valorUnitario(BigDecimal.ONE)
                 .valorTotal(BigDecimal.TEN)

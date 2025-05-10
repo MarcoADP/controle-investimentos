@@ -12,7 +12,7 @@ public record MovimentacaoResponse(
         LocalDate data,
         OperacaoEnum operacao,
         String codigo,
-        TipoAtivoEnum tipoAtivo,
+        String tipoAtivo,
         BigDecimal quantidade,
         BigDecimal valorUnitario,
         BigDecimal valorTotal

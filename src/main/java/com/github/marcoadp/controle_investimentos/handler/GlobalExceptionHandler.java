@@ -14,7 +14,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(value = {NotFoundException.class, EntradaInvalidaException.class})
     public ResponseEntity<Object> handleNotFound(NotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
