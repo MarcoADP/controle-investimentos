@@ -71,7 +71,7 @@ public class Consolidacao {
     public void calcularLucro() {
         this.lucroMedio = Objects.equals(quantidadeSaida, BigDecimal.ZERO)
                 ? BigDecimal.ZERO : this.valorMedioSaida.subtract(this.valorMedioEntrada);
-        this.lucroProporcao = this.lucroMedio.divide(this.valorMedioEntrada, 4, RoundingMode.HALF_UP);
+        this.lucroProporcao = this.lucroMedio.divide(this.valorMedioEntrada, 5, RoundingMode.HALF_UP);
     }
 
 }

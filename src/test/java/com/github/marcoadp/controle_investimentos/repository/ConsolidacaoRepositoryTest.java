@@ -65,7 +65,7 @@ class ConsolidacaoRepositoryTest {
         assertThat(consolidacao.getValorMedioSaida()).isEqualTo(BigDecimal.ZERO);
         assertThat(consolidacao.getValorTotalSaida()).isEqualTo(BigDecimal.ZERO);
         assertThat(consolidacao.getLucroMedio()).isEqualTo(BigDecimal.ZERO);
-        assertThat(consolidacao.getLucroProporcao()).isEqualTo(BigDecimal.ZERO.setScale(4, RoundingMode.HALF_UP));
+        assertThat(consolidacao.getLucroProporcao()).isEqualTo(BigDecimal.ZERO.setScale(5, RoundingMode.HALF_UP));
     }
 
 }
