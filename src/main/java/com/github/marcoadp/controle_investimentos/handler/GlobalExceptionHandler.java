@@ -14,7 +14,18 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = {NotFoundException.class, EntradaInvalidaException.class})
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleDefault(Exception ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", BAD_REQUEST.value());
+        body.put("erro", "ERRO_DESCONHECIDO");
+        body.put("mensagem", ex.getMessage());
+
+        return new ResponseEntity<>(body, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFound(NotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -25,12 +36,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, NOT_FOUND);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleDefault(Exception ex) {
+    @ExceptionHandler(EntradaInvalidaException.class)
+    public ResponseEntity<Object> handleEntradaInvalida(EntradaInvalidaException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", BAD_REQUEST.value());
-        body.put("erro", "ERRO_DESCONHECIDO");
+        body.put("erro", "ENTRADA_INVALIDA");
         body.put("mensagem", ex.getMessage());
 
         return new ResponseEntity<>(body, BAD_REQUEST);
