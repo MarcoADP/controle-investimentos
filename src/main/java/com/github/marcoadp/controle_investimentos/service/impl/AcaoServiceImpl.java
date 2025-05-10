@@ -30,7 +30,9 @@ public class AcaoServiceImpl implements AcaoService {
     @Override
     public Acao atualizar(Long id, AcaoRequest acaoRequest) {
         var acao = acaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Acao", id));
-        acao.setSetor(setorService.buscarPeloId(acaoRequest.setorId()));
+        if (acaoRequest.setorId() != null) {
+            acao.setSetor(setorService.buscarPeloId(acaoRequest.setorId()));
+        }
         acaoMapper.updateAcao(acaoRequest, acao);
         return acaoRepository.save(acao);
     }
