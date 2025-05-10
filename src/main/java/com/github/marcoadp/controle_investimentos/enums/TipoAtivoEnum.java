@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public enum TipoAtivoEnum {
 
-    ACAO("Ação"), FI("Fundo Imobiliário");
+    ACAO("Ação"), FI("Fundo Imobiliário"), ETF("ETF"), BDR("BDR");
 
     @Getter
     private String descricao;
