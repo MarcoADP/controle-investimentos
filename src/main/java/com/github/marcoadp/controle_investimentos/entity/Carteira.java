@@ -14,7 +14,7 @@ public class Carteira {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "carteira_ativo_id")
+    @Column(name = "carteira_id")
     private Long id;
 
     @Column
