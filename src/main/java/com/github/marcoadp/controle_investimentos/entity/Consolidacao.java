@@ -1,7 +1,6 @@
 package com.github.marcoadp.controle_investimentos.entity;
 
 import com.github.marcoadp.controle_investimentos.entity.converter.TipoAtivoEnumConverter;
-import com.github.marcoadp.controle_investimentos.enums.OperacaoEnum;
 import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity

@@ -1,7 +1,6 @@
 package com.github.marcoadp.controle_investimentos.repository;
 
 import com.github.marcoadp.controle_investimentos.entity.Consolidacao;
-import com.github.marcoadp.controle_investimentos.enums.OperacaoEnum;
 import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 
 import static com.github.marcoadp.controle_investimentos.stub.ConsolidacaoStub.getConsolidacao;
 import static org.assertj.core.api.Assertions.assertThat;
