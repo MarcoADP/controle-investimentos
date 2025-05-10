@@ -3,10 +3,7 @@ package com.github.marcoadp.controle_investimentos.entity;
 import com.github.marcoadp.controle_investimentos.entity.converter.TipoAtivoEnumConverter;
 import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,6 +24,7 @@ public class Consolidacao {
     @Column
     private String codigo;
 
+    @Setter
     @Column(name = "tipo_ativo")
     @Convert(converter = TipoAtivoEnumConverter.class)
     private TipoAtivoEnum tipoAtivo;

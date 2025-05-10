@@ -9,6 +9,8 @@ import com.github.marcoadp.controle_investimentos.service.CarteiraService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CarteiraServiceImpl implements CarteiraService {
@@ -30,5 +32,10 @@ public class CarteiraServiceImpl implements CarteiraService {
     @Override
     public void remover(Long id) {
         carteiraRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Carteira> listar() {
+        return carteiraRepository.findAll();
     }
 }
