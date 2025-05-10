@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static com.github.marcoadp.controle_investimentos.stub.MovimentacaoStub.getMovimentacao;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -49,15 +50,7 @@ class MovimentacaoRepositoryTest {
     }
 
     private Movimentacao criarMovimentacao() {
-        var movimentacao = Movimentacao.builder()
-                .data(LocalDate.of(2025,1, 1))
-                .operacao(OperacaoEnum.ENTRADA)
-                .codigo("ACAO4")
-                .tipoAtivo(TipoAtivoEnum.ACAO)
-                .quantidade(BigDecimal.TEN)
-                .valorUnitario(BigDecimal.ONE)
-                .valorTotal(BigDecimal.TEN)
-                .build();
+        var movimentacao = getMovimentacao();
         movimentacao = movimentacaoRepository.save(movimentacao);
         return movimentacao;
     }

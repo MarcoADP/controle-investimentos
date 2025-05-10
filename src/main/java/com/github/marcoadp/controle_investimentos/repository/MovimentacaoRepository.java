@@ -1,6 +1,5 @@
 package com.github.marcoadp.controle_investimentos.repository;
 
-import com.github.marcoadp.controle_investimentos.entity.Carteira;
 import com.github.marcoadp.controle_investimentos.entity.Movimentacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
