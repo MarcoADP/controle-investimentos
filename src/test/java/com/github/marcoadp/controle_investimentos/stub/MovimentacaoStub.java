@@ -48,14 +48,13 @@ public class MovimentacaoStub {
 
     public static final String MOVIMENTACAO_REQUEST_JSON = """
             {
-                "nome": "Movimentacao",
-                "descricao": "Movimentacao de Ativos",
-                "ativos": [
-                    {
-                        "codigo": "ACAO4"
-                    }
-                ]
-            }";
+              "data": "2025-01-01",
+              "operacao": "ENTRADA",
+              "codigo": "ACAO4",
+              "tipoAtivo": "Ação",
+              "quantidade": 10,
+              "valorUnitario": 1
+            }
     """;
 
 }
