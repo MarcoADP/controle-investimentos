@@ -1,5 +1,7 @@
 package com.github.marcoadp.controle_investimentos.stub;
 
+import com.github.marcoadp.controle_investimentos.dto.request.ProventoRequest;
+import com.github.marcoadp.controle_investimentos.dto.response.ProventoResponse;
 import com.github.marcoadp.controle_investimentos.entity.Provento;
 import com.github.marcoadp.controle_investimentos.enums.TipoProventoEnum;
 
@@ -10,7 +12,7 @@ import java.time.LocalDate;
 public class ProventoStub {
 
     public static Provento getProvento() {
-        Provento provento = Provento.builder()
+        return Provento.builder()
                 .dataPagamento(LocalDate.of(2025, 1, 1))
                 .tipoProvento(TipoProventoEnum.DIVIDENDOS)
                 .codigo("ACAO4")
@@ -18,7 +20,27 @@ public class ProventoStub {
                 .valorTotal(BigDecimal.TEN)
                 .valorMedio(BigDecimal.ONE.setScale(5, RoundingMode.HALF_UP))
                 .build();
-        return provento;
+    }
+
+    public static ProventoRequest getProventoRequest() {
+        return ProventoRequest.builder()
+                .dataPagamento(LocalDate.of(2025, 1, 1))
+                .tipoProvento("Dividendos")
+                .codigo("ACAO4")
+                .quantidade(10)
+                .valorTotal(BigDecimal.TEN)
+                .build();
+    }
+
+    public static ProventoResponse getProventoResponse() {
+        return ProventoResponse.builder()
+                .dataPagamento(LocalDate.of(2025, 1, 1))
+                .tipoProvento("Dividendos")
+                .codigo("ACAO4")
+                .quantidade(10)
+                .valorTotal(BigDecimal.TEN)
+                .valorMedio(BigDecimal.ONE.setScale(5, RoundingMode.HALF_UP))
+                .build();
     }
 
 }
