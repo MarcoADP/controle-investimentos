@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public enum TipoProventoEnum {
 
-    JSCP("Juros sob Capital Próprio"), DIVIDENDOS("Dividendos"), RENDIMENTOS("Rendimentos");
+    JSCP("Juros sob Capital"), DIVIDENDOS("Dividendos"), RENDIMENTOS("Rendimentos");
 
     @Getter
     private final String descricao;
