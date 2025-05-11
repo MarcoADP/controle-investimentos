@@ -27,7 +27,7 @@ public class ProventoServiceImpl implements ProventoService {
 
     @Override
     public List<Provento> criarEmLote(List<ProventoRequest> proventoRequests) {
-        List<Provento> proventos = proventoRequests.stream().map(proventoMapper::toProvento).toList();
+        var proventos = proventoRequests.stream().map(proventoMapper::toProvento).toList();
         return proventoRepository.saveAll(proventos);
     }
 
@@ -43,7 +43,7 @@ public class ProventoServiceImpl implements ProventoService {
 
     @Override
     public List<Provento> buscarPeloTipoProvento(String tipoProvento) {
-        TipoProventoEnum tipoProventoEnum = TipoProventoEnum.getTipoProventoEnumByDescricao(tipoProvento);
+        var tipoProventoEnum = TipoProventoEnum.getTipoProventoEnumByDescricao(tipoProvento);
         return proventoRepository.findByTipoProvento(tipoProventoEnum);
     }
 

@@ -26,7 +26,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
     @Override
     public List<Movimentacao> criarEmLote(List<MovimentacaoRequest> movimentacaoRequests) {
-        return movimentacaoRequests.stream().map(this::criar).toList();
+        var movimentacoes = movimentacaoRequests.stream().map(movimentacaoMapper::toMovimentacao).toList();
+        return movimentacaoRepository.saveAll(movimentacoes);
     }
 
     @Override

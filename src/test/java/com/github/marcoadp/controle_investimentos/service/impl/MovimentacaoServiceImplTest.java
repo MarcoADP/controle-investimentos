@@ -42,6 +42,20 @@ class MovimentacaoServiceImplTest {
     }
 
     @Test
+    void criarEmLote() {
+
+        var request = getMovimentacaoRequest();
+        var movimentacaoMock = getMovimentacao();
+        when(movimentacaoMapper.toMovimentacao(request)).thenReturn(movimentacaoMock);
+        when(movimentacaoRepository.saveAll(List.of(movimentacaoMock))).thenReturn(List.of(movimentacaoMock));
+
+        var movimentacoes = movimentacaoService.criarEmLote(List.of(request));
+        assertThat(movimentacoes).hasSize(1);
+        assertThat(movimentacoes.getFirst()).usingRecursiveComparison().isEqualTo(movimentacaoMock);
+
+    }
+
+    @Test
     void buscarPeloId() {
         var movimentacaoMock = getMovimentacao();
         when(movimentacaoRepository.findById(1L)).thenReturn(Optional.of(movimentacaoMock));
