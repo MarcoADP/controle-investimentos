@@ -4,6 +4,7 @@ import com.github.marcoadp.controle_investimentos.entity.Provento;
 import com.github.marcoadp.controle_investimentos.enums.TipoProventoEnum;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 public class ProventoStub {
@@ -13,8 +14,10 @@ public class ProventoStub {
                 .dataPagamento(LocalDate.of(2025, 1, 1))
                 .tipoProvento(TipoProventoEnum.DIVIDENDOS)
                 .codigo("ACAO4")
+                .quantidade(10)
+                .valorTotal(BigDecimal.TEN)
+                .valorMedio(BigDecimal.ONE.setScale(5, RoundingMode.HALF_UP))
                 .build();
-        provento.calcularValor(10, BigDecimal.TEN);
         return provento;
     }
 

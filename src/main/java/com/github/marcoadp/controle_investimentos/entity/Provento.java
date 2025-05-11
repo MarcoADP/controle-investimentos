@@ -42,10 +42,4 @@ public class Provento {
     @Column(name = "valor_medio")
     private BigDecimal valorMedio;
 
-    public void calcularValor(Integer quantidade, BigDecimal valorTotal) {
-        this.quantidade = quantidade;
-        this.valorTotal = valorTotal;
-        this.valorMedio = valorTotal.divide(BigDecimal.valueOf(quantidade), 5, RoundingMode.HALF_UP);
-    }
-
 }
