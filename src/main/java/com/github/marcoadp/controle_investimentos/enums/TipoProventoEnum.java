@@ -10,7 +10,7 @@ public enum TipoProventoEnum {
     JSCP("Juros sob Capital Próprio"), DIVIDENDOS("Dividendos"), RENDIMENTOS("Rendimentos");
 
     @Getter
-    private String descricao;
+    private final String descricao;
 
     TipoProventoEnum(String descricao) {
         this.descricao = descricao;
