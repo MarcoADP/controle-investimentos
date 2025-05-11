@@ -43,4 +43,26 @@ public class ProventoStub {
                 .build();
     }
 
+    public static final String PROVENTO_REQUEST_JSON = """
+            {
+              "dataPagamento": "2025-01-01",
+              "tipoProvento": "Dividendos",
+              "codigo": "ACAO4",
+              "quantidade": 10,
+              "valorTotal": 10
+            }
+    """;
+
+    public static final String PROVENTO_REQUEST_LOTE_JSON = """
+            [
+                {
+                  "dataPagamento": "2025-01-01",
+                  "tipoProvento": "Dividendos",
+                  "codigo": "ACAO4",
+                  "quantidade": 10,
+                  "valorTotal": 10
+                }
+            ]
+    """;
+
 }
