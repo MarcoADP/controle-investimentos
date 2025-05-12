@@ -1,5 +1,6 @@
 package com.github.marcoadp.controle_investimentos.service.impl;
 
+import com.github.marcoadp.controle_investimentos.dto.response.ConsolidacaoProventoAnualResponse;
 import com.github.marcoadp.controle_investimentos.entity.Carteira;
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
 import com.github.marcoadp.controle_investimentos.entity.Provento;
@@ -100,11 +101,22 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
 
     @Override
     public List<ConsolidacaoProvento> buscarPeloCodigoEAno(String codigo, int ano) {
-        return consolidacaoRepository.findFirstByCodigoAndAno(codigo, ano);
+        return consolidacaoRepository.findByCodigoAndAno(codigo, ano);
     }
 
     @Override
     public void remover(Long id) {
         consolidacaoRepository.deleteById(id);
+    }
+
+    @Override
+    public ConsolidacaoProventoAnualResponse buscarConsolidacaoAnualPeloCodigo(String codigo, int ano) {
+        List<ConsolidacaoProvento> consolidacoes = consolidacaoRepository.findByCodigoAndAno(codigo, ano);
+        return ConsolidacaoProventoAnualResponse.builder()
+                .codigo(codigo)
+                .ano(ano)
+                .valorTotal(consolidacoes.stream().map(ConsolidacaoProvento::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add))
+                .valorMedio(consolidacoes.stream().map(ConsolidacaoProvento::getValorMedio).reduce(BigDecimal.ZERO, BigDecimal::add))
+                .build();
     }
 }

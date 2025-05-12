@@ -1,5 +1,6 @@
 package com.github.marcoadp.controle_investimentos.controller;
 
+import com.github.marcoadp.controle_investimentos.dto.response.ConsolidacaoProventoAnualResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ConsolidacaoProventoResponse;
 import com.github.marcoadp.controle_investimentos.mapper.ConsolidacaoProventoMapper;
 import com.github.marcoadp.controle_investimentos.service.ConsolidacaoProventoService;
@@ -32,6 +33,11 @@ public class ConsolidacaoProventoController {
     public List<ConsolidacaoProventoResponse> buscarPeloCodigo(@PathVariable String codigo) {
         var consolidacoes = consolidacaoService.buscarPeloCodigo(codigo);
         return consolidacoes.stream().map(consolidacaoMapper::toConsolidacaoProventoResponse).toList();
+    }
+
+    @GetMapping("/anual/codigo/{codigo}/ano/{ano}")
+    public ConsolidacaoProventoAnualResponse buscarConsolidacaoAnualPeloCodigo(@PathVariable String codigo, @PathVariable Integer ano) {
+        return consolidacaoService.buscarConsolidacaoAnualPeloCodigo(codigo, ano);
     }
 
     @GetMapping("/codigo/{codigo}/ano/{ano}")

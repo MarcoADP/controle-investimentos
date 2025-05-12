@@ -15,5 +15,5 @@ public interface ConsolidacaoProventoRepository extends JpaRepository<Consolidac
 
     Optional<ConsolidacaoProvento> findFirstByCodigoAndAnoAndTipoProvento(String codigo, Integer ano, TipoProventoEnum tipoProvento);
 
-    List<ConsolidacaoProvento> findFirstByCodigoAndAno(String codigo, int ano);
+    List<ConsolidacaoProvento> findByCodigoAndAno(String codigo, int ano);
 }
