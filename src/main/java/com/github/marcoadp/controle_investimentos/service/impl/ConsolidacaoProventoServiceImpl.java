@@ -3,6 +3,7 @@ package com.github.marcoadp.controle_investimentos.service.impl;
 import com.github.marcoadp.controle_investimentos.entity.Carteira;
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
 import com.github.marcoadp.controle_investimentos.entity.Provento;
+import com.github.marcoadp.controle_investimentos.enums.TipoProventoEnum;
 import com.github.marcoadp.controle_investimentos.handler.NotFoundException;
 import com.github.marcoadp.controle_investimentos.repository.ConsolidacaoProventoRepository;
 import com.github.marcoadp.controle_investimentos.service.CarteiraService;
@@ -47,35 +48,42 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
         var anoFinal = LocalDate.now().getYear();
         List<ConsolidacaoProvento> consolidacoes = new ArrayList<>();
         for (int ano = anoInicial; ano <= anoFinal; ano++) {
-            var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoAndAno(codigo, ano);
-            var id = consolidacaoOpt.map(ConsolidacaoProvento::getId).orElse(null);
-            var consolidacao = ConsolidacaoProvento.builder()
-                    .id(id)
-                    .ano(ano)
-                    .codigo(codigo)
-                    .valorTotal(BigDecimal.ZERO)
-                    .valorMedio(BigDecimal.ZERO)
-                    .build();
-            calcularValores(consolidacao, ano);
-            consolidacoes.add(consolidacaoRepository.save(consolidacao));
+            for (TipoProventoEnum tipoProvento: TipoProventoEnum.values()) {
+                var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoAndAnoAndTipoProvento(codigo, ano, tipoProvento);
+                var id = consolidacaoOpt.map(ConsolidacaoProvento::getId).orElse(null);
+                var consolidacao = ConsolidacaoProvento.builder()
+                        .id(id)
+                        .ano(ano)
+                        .codigo(codigo)
+                        .tipoProvento(tipoProvento)
+                        .valorTotal(BigDecimal.ZERO)
+                        .valorMedio(BigDecimal.ZERO)
+                        .build();
+                calcularValores(consolidacao, ano, tipoProvento);
+                consolidacoes.add(consolidacaoRepository.save(consolidacao));
+            }
         }
 
         return consolidacoes;
     }
 
-    private void calcularValores(ConsolidacaoProvento consolidacao, int ano) {
+    private void calcularValores(ConsolidacaoProvento consolidacao, int ano, TipoProventoEnum tipoProvento) {
         var proventos = proventoService.buscarPeloCodigo(consolidacao.getCodigo());
         if (proventos.isEmpty()) {
             return;
         }
-        BigDecimal valorTotal = agregar(proventos, ano, Provento::getValorTotal);
-        BigDecimal valorMedio = agregar(proventos, ano, Provento::getValorMedio);
+        BigDecimal valorTotal = agregar(proventos, ano, tipoProvento, Provento::getValorTotal);
+        BigDecimal valorMedio = agregar(proventos, ano, tipoProvento, Provento::getValorMedio);
         consolidacao.inserirValores(valorTotal, valorMedio);
     }
 
-    public static BigDecimal agregar(List<Provento> proventos, int ano, Function<Provento, BigDecimal> campo) {
+    public static BigDecimal agregar(List<Provento> proventos,
+                                     int ano,
+                                     TipoProventoEnum tipoProvento,
+                                     Function<Provento, BigDecimal> campo
+    ) {
         return proventos.stream()
-                .filter(provento -> provento.getDataPagamento().getYear() == ano)
+                .filter(provento -> provento.getDataPagamento().getYear() == ano && provento.getTipoProvento().equals(tipoProvento))
                 .map(campo)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
@@ -91,8 +99,8 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
     }
 
     @Override
-    public ConsolidacaoProvento buscarPeloCodigoEAno(String codigo, int ano) {
-        return consolidacaoRepository.findFirstByCodigoAndAno(codigo, ano).orElseThrow(() -> new NotFoundException("Consolidação", codigo));
+    public List<ConsolidacaoProvento> buscarPeloCodigoEAno(String codigo, int ano) {
+        return consolidacaoRepository.findFirstByCodigoAndAno(codigo, ano);
     }
 
     @Override

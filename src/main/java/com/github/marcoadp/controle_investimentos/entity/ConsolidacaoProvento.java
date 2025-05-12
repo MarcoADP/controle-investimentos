@@ -1,5 +1,6 @@
 package com.github.marcoadp.controle_investimentos.entity;
 
+import com.github.marcoadp.controle_investimentos.enums.TipoProventoEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,10 @@ public class ConsolidacaoProvento {
     private String codigo;
 
     private Integer ano;
+
+    @Column(name = "tipo")
+    @Enumerated(EnumType.STRING)
+    private TipoProventoEnum tipoProvento;
 
     @Column(name = "valor_total")
     private BigDecimal valorTotal;

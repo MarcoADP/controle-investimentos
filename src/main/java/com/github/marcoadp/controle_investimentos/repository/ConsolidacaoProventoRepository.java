@@ -1,6 +1,7 @@
 package com.github.marcoadp.controle_investimentos.repository;
 
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
+import com.github.marcoadp.controle_investimentos.enums.TipoProventoEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,7 @@ public interface ConsolidacaoProventoRepository extends JpaRepository<Consolidac
 
     List<ConsolidacaoProvento> findByCodigo(String codigo);
 
-    Optional<ConsolidacaoProvento> findFirstByCodigoAndAno(String codigo, Integer ano);
+    Optional<ConsolidacaoProvento> findFirstByCodigoAndAnoAndTipoProvento(String codigo, Integer ano, TipoProventoEnum tipoProvento);
 
+    List<ConsolidacaoProvento> findFirstByCodigoAndAno(String codigo, int ano);
 }

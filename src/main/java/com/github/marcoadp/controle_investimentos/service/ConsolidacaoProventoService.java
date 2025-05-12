@@ -12,7 +12,7 @@ public interface ConsolidacaoProventoService {
 
     List<ConsolidacaoProvento> buscarPeloCodigo(String codigo);
 
-    ConsolidacaoProvento buscarPeloCodigoEAno(String codigo, int ano);
+    List<ConsolidacaoProvento> buscarPeloCodigoEAno(String codigo, int ano);
 
     void remover(Long id);
 }

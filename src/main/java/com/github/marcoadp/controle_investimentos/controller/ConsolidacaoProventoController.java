@@ -35,9 +35,9 @@ public class ConsolidacaoProventoController {
     }
 
     @GetMapping("/codigo/{codigo}/ano/{ano}")
-    public ConsolidacaoProventoResponse buscarPeloCodigoEAno(@PathVariable String codigo, @PathVariable Integer ano) {
-        var consolidacao = consolidacaoService.buscarPeloCodigoEAno(codigo, ano);
-        return consolidacaoMapper.toConsolidacaoProventoResponse(consolidacao);
+    public List<ConsolidacaoProventoResponse> buscarPeloCodigoEAno(@PathVariable String codigo, @PathVariable Integer ano) {
+        var consolidacoes = consolidacaoService.buscarPeloCodigoEAno(codigo, ano);
+        return consolidacoes.stream().map(consolidacaoMapper::toConsolidacaoProventoResponse).toList();
     }
 
     @DeleteMapping("/{id}")
