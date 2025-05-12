@@ -1,7 +1,6 @@
 package com.github.marcoadp.controle_investimentos.repository;
 
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
-import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -64,7 +63,6 @@ class ConsolidacaoProventoRepositoryTest {
     private static void assertConsolidacaoProvento(ConsolidacaoProvento consolidacao) {
         assertThat(consolidacao.getId()).isNotNull();
         assertThat(consolidacao.getCodigo()).isEqualTo("ACAO4");
-        assertThat(consolidacao.getTipoAtivo()).isEqualTo(TipoAtivoEnum.ACAO);
         assertThat(consolidacao.getAno()).isEqualTo(2025);
         assertThat(consolidacao.getValorTotal()).isEqualTo(BigDecimal.TEN);
         assertThat(consolidacao.getValorMedio()).isEqualTo(BigDecimal.ONE);

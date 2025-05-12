@@ -1,9 +1,10 @@
 package com.github.marcoadp.controle_investimentos.entity;
 
-import com.github.marcoadp.controle_investimentos.entity.converter.TipoAtivoEnumConverter;
-import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -22,11 +23,6 @@ public class ConsolidacaoProvento {
     @Column
     private String codigo;
 
-    @Setter
-    @Column(name = "tipo_ativo")
-    @Convert(converter = TipoAtivoEnumConverter.class)
-    private TipoAtivoEnum tipoAtivo;
-
     private Integer ano;
 
     @Column(name = "valor_total")
@@ -35,4 +31,8 @@ public class ConsolidacaoProvento {
     @Column(name = "valor_medio")
     private BigDecimal valorMedio;
 
+    public void inserirValores(BigDecimal valorTotal, BigDecimal valorMedio) {
+        this.valorTotal = valorTotal;
+        this.valorMedio = valorMedio;
+    }
 }
