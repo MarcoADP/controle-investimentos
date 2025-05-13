@@ -7,6 +7,10 @@ import com.github.marcoadp.controle_investimentos.entity.FundoImobiliario.FundoI
 
 public class FundoImobiliarioStub {
 
+    public static FundoImobiliario getFundoImobiliario() {
+        return getFundoImobiliarioBuilder().id(1L).build();
+    }
+
     public static FundoImobiliarioBuilder getFundoImobiliarioBuilder() {
         return FundoImobiliario.builder()
                 .nome("FI")
