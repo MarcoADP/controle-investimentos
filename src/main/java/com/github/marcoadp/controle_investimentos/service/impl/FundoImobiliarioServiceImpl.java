@@ -27,19 +27,19 @@ public class FundoImobiliarioServiceImpl implements FundoImobiliarioService {
 
     @Override
     public FundoImobiliario atualizar(Long id, FundoImobiliarioRequest fundoImobiliarioRequest) {
-        var fundoImobiliario = fundoImobiliarioRepository.findById(id).orElseThrow(() -> new NotFoundException("FundoImobiliario", id));
+        var fundoImobiliario = fundoImobiliarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Fundo Imobiliário", id));
         fundoImobiliarioMapper.updateFundoImobiliario(fundoImobiliarioRequest, fundoImobiliario);
         return fundoImobiliarioRepository.save(fundoImobiliario);
     }
 
     @Override
     public FundoImobiliario buscarPeloId(Long id) {
-        return fundoImobiliarioRepository.findById(id).orElseThrow(() -> new NotFoundException("FundoImobiliario", id));
+        return fundoImobiliarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Fundo Imobiliário", id));
     }
 
     @Override
     public FundoImobiliario buscarPeloCodigo(String codigo) {
-        return fundoImobiliarioRepository.findFirstByCodigo(codigo).orElseThrow(() -> new NotFoundException("FundoImobiliario", codigo));
+        return fundoImobiliarioRepository.findFirstByCodigo(codigo).orElseThrow(() -> new NotFoundException("Fundo Imobiliário", codigo));
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.github.marcoadp.controle_investimentos.service.impl;
 import com.github.marcoadp.controle_investimentos.entity.FundoImobiliario;
 import com.github.marcoadp.controle_investimentos.mapper.FundoImobiliarioMapper;
 import com.github.marcoadp.controle_investimentos.repository.FundoImobiliarioRepository;
-import com.github.marcoadp.controle_investimentos.repository.spec.FundoImobiliarioSpec;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

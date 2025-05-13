@@ -34,7 +34,7 @@ public class FundoImobiliarioStub {
             "codigo": "FIMO11",
             "cnpj": "26492737000162",
             "tipo": "Tipo",
-            "Segmento": "Segmento"
+            "segmento": "Segmento"
         }";
     """;
 
