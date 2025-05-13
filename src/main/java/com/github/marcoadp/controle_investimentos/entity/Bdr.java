@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "bdr")
+@Entity(name = "brazilian_depositary_receipts")
 @Builder
 public class Bdr {
 
