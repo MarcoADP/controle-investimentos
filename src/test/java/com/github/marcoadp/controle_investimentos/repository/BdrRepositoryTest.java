@@ -53,7 +53,7 @@ class BdrRepositoryTest {
     }
 
     private Bdr criarBdr() {
-        var bdr = getBdr();
+        var bdr = getBdr(null);
         return bdrRepository.save(bdr);
     }
 
