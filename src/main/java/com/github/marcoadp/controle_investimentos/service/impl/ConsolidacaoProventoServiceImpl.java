@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -34,7 +35,7 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
         var carteiras = carteiraService.listar();
         List<ConsolidacaoProvento> consolidacoes = new ArrayList<>();
         carteiras.forEach(carteira ->  consolidacoes.addAll(consolidarCarteira(carteira)));
-        return consolidacoes;
+        return consolidacaoRepository.saveAll(consolidacoes);
     }
 
     private List<ConsolidacaoProvento> consolidarCarteira(Carteira carteira) {
@@ -49,23 +50,32 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
         var anoFinal = LocalDate.now().getYear();
         List<ConsolidacaoProvento> consolidacoes = new ArrayList<>();
         for (int ano = anoInicial; ano <= anoFinal; ano++) {
-            for (TipoProventoEnum tipoProvento: TipoProventoEnum.values()) {
-                var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoAndAnoAndTipoProvento(codigo, ano, tipoProvento);
-                var id = consolidacaoOpt.map(ConsolidacaoProvento::getId).orElse(null);
-                var consolidacao = ConsolidacaoProvento.builder()
-                        .id(id)
-                        .ano(ano)
-                        .codigo(codigo)
-                        .tipoProvento(tipoProvento)
-                        .valorTotal(BigDecimal.ZERO)
-                        .valorMedio(BigDecimal.ZERO)
-                        .build();
-                calcularValores(consolidacao, ano, tipoProvento);
-                consolidacoes.add(consolidacaoRepository.save(consolidacao));
+            for (var mes: Month.values()) {
+                consolidarAtivoPorMes(codigo, mes, ano, consolidacoes);
             }
         }
 
         return consolidacoes;
+    }
+
+    private void consolidarAtivoPorMes(String codigo, Month mes, int ano, List<ConsolidacaoProvento> consolidacoes) {
+        for (TipoProventoEnum tipoProvento: TipoProventoEnum.values()) {
+            var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoAndMesAndAnoAndTipoProvento(codigo, mes.getValue(), ano, tipoProvento);
+            var id = consolidacaoOpt.map(ConsolidacaoProvento::getId).orElse(null);
+            var consolidacao = ConsolidacaoProvento.builder()
+                    .id(id)
+                    .mes(mes.getValue())
+                    .ano(ano)
+                    .codigo(codigo)
+                    .tipoProvento(tipoProvento)
+                    .valorTotal(BigDecimal.ZERO)
+                    .valorMedio(BigDecimal.ZERO)
+                    .build();
+            calcularValores(consolidacao, ano, tipoProvento);
+            if (!consolidacao.getValorTotal().equals(BigDecimal.ZERO)) {
+                consolidacoes.add(consolidacao);
+            }
+        }
     }
 
     private void calcularValores(ConsolidacaoProvento consolidacao, int ano, TipoProventoEnum tipoProvento) {

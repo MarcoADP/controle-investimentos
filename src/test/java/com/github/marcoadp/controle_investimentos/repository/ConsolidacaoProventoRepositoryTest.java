@@ -42,7 +42,7 @@ class ConsolidacaoProventoRepositoryTest {
     @Test
     void findByCodigoAndAnoAndTipoProvento() {
         var consolidacao = criarConsolidacaoProvento();
-        var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoAndAnoAndTipoProvento(consolidacao.getCodigo(), 2025, TipoProventoEnum.DIVIDENDOS);
+        var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoAndMesAndAnoAndTipoProvento(consolidacao.getCodigo(), 1,2025, TipoProventoEnum.DIVIDENDOS);
         assertThat(consolidacaoOpt).isPresent();
         assertConsolidacaoProvento(consolidacaoOpt.get());
     }
@@ -64,6 +64,7 @@ class ConsolidacaoProventoRepositoryTest {
     private static void assertConsolidacaoProvento(ConsolidacaoProvento consolidacao) {
         assertThat(consolidacao.getId()).isNotNull();
         assertThat(consolidacao.getCodigo()).isEqualTo("ACAO4");
+        assertThat(consolidacao.getMes()).isEqualTo(1);
         assertThat(consolidacao.getAno()).isEqualTo(2025);
         assertThat(consolidacao.getTipoProvento()).isEqualTo(TipoProventoEnum.DIVIDENDOS);
         assertThat(consolidacao.getValorTotal()).isEqualTo(BigDecimal.TEN);

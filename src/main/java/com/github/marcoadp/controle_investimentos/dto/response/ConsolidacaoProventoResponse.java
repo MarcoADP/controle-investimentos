@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Builder
 public record ConsolidacaoProventoResponse(
         String codigo,
+        Integer mes,
         Integer ano,
         TipoProventoEnum tipoProvento,
         BigDecimal valorTotal,

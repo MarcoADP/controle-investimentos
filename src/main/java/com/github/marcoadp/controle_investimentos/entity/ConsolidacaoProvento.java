@@ -24,6 +24,8 @@ public class ConsolidacaoProvento {
     @Column
     private String codigo;
 
+    private Integer mes;
+
     private Integer ano;
 
     @Column(name = "tipo")

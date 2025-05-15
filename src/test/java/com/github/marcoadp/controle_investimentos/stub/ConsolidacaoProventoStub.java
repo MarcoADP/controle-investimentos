@@ -11,6 +11,7 @@ public class ConsolidacaoProventoStub {
     public static ConsolidacaoProvento getConsolidacaoProvento() {
         return ConsolidacaoProvento.builder()
                 .codigo("ACAO4")
+                .mes(1)
                 .ano(2025)
                 .tipoProvento(TipoProventoEnum.DIVIDENDOS)
                 .valorTotal(BigDecimal.TEN)
@@ -21,6 +22,7 @@ public class ConsolidacaoProventoStub {
     public static ConsolidacaoProventoResponse getConsolidacaoProventoResponse() {
         return ConsolidacaoProventoResponse.builder()
                 .codigo("ACAO4")
+                .mes(1)
                 .ano(2025)
                 .tipoProvento(TipoProventoEnum.DIVIDENDOS)
                 .valorTotal(BigDecimal.TEN)
