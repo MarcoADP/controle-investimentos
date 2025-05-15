@@ -16,7 +16,7 @@ public record AtivoInformacaoResponse(String codigo,
                                       BigDecimal variacao,
                                       BigDecimal rentabilidade ) {
 
-    public static AtivoInformacaoResponse criar(Consolidacao consolidacao) {
+    public static AtivoInformacaoResponse criar(Consolidacao consolidacao, BigDecimal proventoValor) {
         var entrada = new ValorInformacaoResponse(consolidacao.getQuantidadeEntrada(),
                 consolidacao.getValorMedioEntrada(), consolidacao.getValorTotalEntrada());
         var saida = new ValorInformacaoResponse(consolidacao.getQuantidadeSaida(),
@@ -25,6 +25,7 @@ public record AtivoInformacaoResponse(String codigo,
                 BigDecimal.TEN, entrada.quantidade().multiply(BigDecimal.TEN));
         var saldo = atual.valorTotal().add(saida.valorTotal()).subtract(entrada.valorTotal());
         var variacao = saldo.divide(entrada.valorTotal(), 5, RoundingMode.HALF_UP);
+        var rentabilidade = saldo.add(proventoValor).divide(entrada.valorTotal(), 5, RoundingMode.HALF_UP);
         return AtivoInformacaoResponse.builder()
                 .codigo(consolidacao.getCodigo())
                 .tipo(consolidacao.getTipoAtivo().getDescricao())
@@ -33,7 +34,7 @@ public record AtivoInformacaoResponse(String codigo,
                 .atual(atual)
                 .saldo(saldo)
                 .variacao(variacao)
-                .rentabilidade(variacao)
+                .rentabilidade(rentabilidade)
                 .build();
     }
 
