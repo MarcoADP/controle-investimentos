@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class DadosServiceImpl implements DadosService {
         var carteira = carteiraService.buscarPeloId(carteiraId);
         var ativos = carteira.getAtivos().stream()
                 .map(ativo -> criarAtivoInformacaoResponse(ativo.getCodigo()))
+                .sorted(Comparator.comparing(AtivoInformacaoResponse::tipo).thenComparing(AtivoInformacaoResponse::codigo))
                 .toList();
         return new CarteiraSimplificadaResponse(ativos);
     }
