@@ -24,7 +24,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoService {
 
-    private final ConsolidacaoProventoRepository consolidacaoRepository;
+    private final ConsolidacaoProventoRepository consolidacaoProventoRepository;
 
     private final CarteiraService carteiraService;
 
@@ -35,7 +35,7 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
         var carteiras = carteiraService.listar();
         List<ConsolidacaoProvento> consolidacoes = new ArrayList<>();
         carteiras.forEach(carteira ->  consolidacoes.addAll(consolidarCarteira(carteira)));
-        return consolidacaoRepository.saveAll(consolidacoes);
+        return consolidacaoProventoRepository.saveAll(consolidacoes);
     }
 
     private List<ConsolidacaoProvento> consolidarCarteira(Carteira carteira) {
@@ -60,7 +60,7 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
 
     private void consolidarAtivoPorMes(String codigo, Month mes, int ano, List<ConsolidacaoProvento> consolidacoes) {
         for (TipoProventoEnum tipoProvento: TipoProventoEnum.values()) {
-            var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoAndMesAndAnoAndTipoProvento(codigo, mes.getValue(), ano, tipoProvento);
+            var consolidacaoOpt = consolidacaoProventoRepository.findFirstByCodigoAndMesAndAnoAndTipoProvento(codigo, mes.getValue(), ano, tipoProvento);
             var id = consolidacaoOpt.map(ConsolidacaoProvento::getId).orElse(null);
             var consolidacao = ConsolidacaoProvento.builder()
                     .id(id)
@@ -71,57 +71,58 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
                     .valorTotal(BigDecimal.ZERO)
                     .valorMedio(BigDecimal.ZERO)
                     .build();
-            calcularValores(consolidacao, ano, tipoProvento);
+            calcularValores(consolidacao, mes.getValue(), ano, tipoProvento);
             if (!consolidacao.getValorTotal().equals(BigDecimal.ZERO)) {
                 consolidacoes.add(consolidacao);
             }
         }
     }
 
-    private void calcularValores(ConsolidacaoProvento consolidacao, int ano, TipoProventoEnum tipoProvento) {
+    private void calcularValores(ConsolidacaoProvento consolidacao, int mes, int ano, TipoProventoEnum tipoProvento) {
         var proventos = proventoService.buscarPeloCodigo(consolidacao.getCodigo());
         if (proventos.isEmpty()) {
             return;
         }
-        BigDecimal valorTotal = agregar(proventos, ano, tipoProvento, Provento::getValorTotal);
-        BigDecimal valorMedio = agregar(proventos, ano, tipoProvento, Provento::getValorMedio);
+        BigDecimal valorTotal = agregar(proventos, mes, ano, tipoProvento, Provento::getValorTotal);
+        BigDecimal valorMedio = agregar(proventos, mes, ano, tipoProvento, Provento::getValorMedio);
         consolidacao.inserirValores(valorTotal, valorMedio);
     }
 
     public static BigDecimal agregar(List<Provento> proventos,
+                                     int mes,
                                      int ano,
                                      TipoProventoEnum tipoProvento,
                                      Function<Provento, BigDecimal> campo
     ) {
         return proventos.stream()
-                .filter(provento -> provento.getDataPagamento().getYear() == ano && provento.getTipoProvento().equals(tipoProvento))
+                .filter(provento -> provento.getDataPagamento().getMonthValue() == mes && provento.getDataPagamento().getYear() == ano && provento.getTipoProvento().equals(tipoProvento))
                 .map(campo)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public ConsolidacaoProvento buscarPeloId(Long id) {
-        return consolidacaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Movimentação", id));
+        return consolidacaoProventoRepository.findById(id).orElseThrow(() -> new NotFoundException("Movimentação", id));
     }
 
     @Override
     public List<ConsolidacaoProvento> buscarPeloCodigo(String codigo) {
-        return consolidacaoRepository.findByCodigo(codigo);
+        return consolidacaoProventoRepository.findByCodigo(codigo);
     }
 
     @Override
     public List<ConsolidacaoProvento> buscarPeloCodigoEAno(String codigo, int ano) {
-        return consolidacaoRepository.findByCodigoAndAno(codigo, ano);
+        return consolidacaoProventoRepository.findByCodigoAndAno(codigo, ano);
     }
 
     @Override
     public void remover(Long id) {
-        consolidacaoRepository.deleteById(id);
+        consolidacaoProventoRepository.deleteById(id);
     }
 
     @Override
     public ConsolidacaoProventoAnualResponse buscarConsolidacaoAnualPeloCodigo(String codigo, int ano) {
-        List<ConsolidacaoProvento> consolidacoes = consolidacaoRepository.findByCodigoAndAno(codigo, ano);
+        List<ConsolidacaoProvento> consolidacoes = consolidacaoProventoRepository.findByCodigoAndAno(codigo, ano);
         return ConsolidacaoProventoAnualResponse.builder()
                 .codigo(codigo)
                 .ano(ano)
