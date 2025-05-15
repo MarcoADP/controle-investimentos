@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +39,8 @@ public class FundoImobiliarioServiceImpl implements FundoImobiliarioService {
     }
 
     @Override
-    public FundoImobiliario buscarPeloCodigo(String codigo) {
-        return fundoImobiliarioRepository.findFirstByCodigo(codigo).orElseThrow(() -> new NotFoundException("Fundo Imobiliário", codigo));
+    public Optional<FundoImobiliario> buscarPeloCodigo(String codigo) {
+        return fundoImobiliarioRepository.findFirstByCodigo(codigo);
     }
 
     @Override

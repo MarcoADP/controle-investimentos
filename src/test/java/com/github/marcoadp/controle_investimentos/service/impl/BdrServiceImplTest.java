@@ -66,7 +66,7 @@ class BdrServiceImplTest {
         var bdrMock = getBdr(1L);
         when(bdrRepository.findFirstByCodigo(bdrMock.getCodigo())).thenReturn(Optional.of(bdrMock));
         var bdr = bdrService.buscarPeloCodigo("BDRZ32");
-        assertBdr(bdr, bdrMock);
+        assertBdr(bdr.get(), bdrMock);
     }
 
     @Test

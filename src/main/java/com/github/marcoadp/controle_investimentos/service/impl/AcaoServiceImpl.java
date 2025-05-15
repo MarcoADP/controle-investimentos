@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,8 +44,8 @@ public class AcaoServiceImpl implements AcaoService {
     }
 
     @Override
-    public Acao buscarPeloCodigo(String codigo) {
-        return acaoRepository.findFirstByCodigo(codigo).orElseThrow(() -> new NotFoundException("Acao", codigo));
+    public Optional<Acao> buscarPeloCodigo(String codigo) {
+        return acaoRepository.findFirstByCodigo(codigo);
     }
 
     @Override

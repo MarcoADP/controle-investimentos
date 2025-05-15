@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class BdrServiceImpl implements BdrService {
     }
 
     @Override
-    public Bdr buscarPeloCodigo(String codigo) {
-        return bdrRepository.findFirstByCodigo(codigo).orElseThrow(() -> new NotFoundException("Bdr", codigo));
+    public Optional<Bdr> buscarPeloCodigo(String codigo) {
+        return bdrRepository.findFirstByCodigo(codigo);
     }
 
     @Override

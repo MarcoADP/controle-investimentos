@@ -66,7 +66,7 @@ class EtfServiceImplTest {
         var etfMock = getEtf(1L);
         when(etfRepository.findFirstByCodigo(etfMock.getCodigo())).thenReturn(Optional.of(etfMock));
         var etf = etfService.buscarPeloCodigo("ETF11");
-        assertEtf(etf, etfMock);
+        assertEtf(etf.get(), etfMock);
     }
 
     @Test

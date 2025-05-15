@@ -4,6 +4,7 @@ import com.github.marcoadp.controle_investimentos.dto.request.AcaoRequest;
 import com.github.marcoadp.controle_investimentos.entity.Acao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AcaoService {
 
@@ -13,7 +14,7 @@ public interface AcaoService {
 
     Acao buscarPeloId(Long id);
 
-    Acao buscarPeloCodigo(String codigo);
+    Optional<Acao> buscarPeloCodigo(String codigo);
 
     List<Acao> buscarPeloSetor(Long setorId);
 

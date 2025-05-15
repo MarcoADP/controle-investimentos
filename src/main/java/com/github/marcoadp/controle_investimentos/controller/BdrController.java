@@ -2,6 +2,7 @@ package com.github.marcoadp.controle_investimentos.controller;
 
 import com.github.marcoadp.controle_investimentos.dto.request.BdrRequest;
 import com.github.marcoadp.controle_investimentos.dto.response.BdrResponse;
+import com.github.marcoadp.controle_investimentos.handler.NotFoundException;
 import com.github.marcoadp.controle_investimentos.mapper.BdrMapper;
 import com.github.marcoadp.controle_investimentos.service.BdrService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class BdrController {
 
     @GetMapping("/codigo/{codigo}")
     public BdrResponse buscarPeloCodigo(@PathVariable String codigo) {
-        var bdr = bdrService.buscarPeloCodigo(codigo);
+        var bdr = bdrService.buscarPeloCodigo(codigo).orElseThrow(() -> new NotFoundException("Bdr", codigo));
         return bdrMapper.toBdrResponse(bdr);
     }
 

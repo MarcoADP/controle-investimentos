@@ -13,6 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.marcoadp.controle_investimentos.stub.AcaoStub.*;
 import static org.mockito.Mockito.when;
@@ -92,7 +93,7 @@ class AcaoControllerTest {
     @Test
     void buscarPeloCodigo() throws Exception {
         var acao = getAcao();
-        when(acaoService.buscarPeloCodigo(acao.getCodigo())).thenReturn(acao);
+        when(acaoService.buscarPeloCodigo(acao.getCodigo())).thenReturn(Optional.of(acao));
         when(acaoMapper.toAcaoResponse(acao)).thenReturn(getAcaoResponse());
 
         mockMvc.perform(get("/acao/codigo/ACAO4"))

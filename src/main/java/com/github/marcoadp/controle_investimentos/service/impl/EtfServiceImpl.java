@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class EtfServiceImpl implements EtfService {
     }
 
     @Override
-    public Etf buscarPeloCodigo(String codigo) {
-        return etfRepository.findFirstByCodigo(codigo).orElseThrow(() -> new NotFoundException("Etf", codigo));
+    public Optional<Etf> buscarPeloCodigo(String codigo) {
+        return etfRepository.findFirstByCodigo(codigo);
     }
 
     @Override

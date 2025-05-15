@@ -4,6 +4,7 @@ import com.github.marcoadp.controle_investimentos.dto.request.FundoImobiliarioRe
 import com.github.marcoadp.controle_investimentos.entity.FundoImobiliario;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FundoImobiliarioService {
 
@@ -13,7 +14,7 @@ public interface FundoImobiliarioService {
 
     FundoImobiliario buscarPeloId(Long id);
 
-    FundoImobiliario buscarPeloCodigo(String codigo);
+    Optional<FundoImobiliario> buscarPeloCodigo(String codigo);
 
     List<FundoImobiliario> buscar(String codigo, String tipo, String segmento);
 

@@ -68,7 +68,7 @@ class FundoImobiliarioServiceImplTest {
         var fundoImobiliarioMock = getFundoImobiliario();
         when(fundoImobiliarioRepository.findFirstByCodigo(fundoImobiliarioMock.getCodigo())).thenReturn(Optional.of(fundoImobiliarioMock));
         var fundoImobiliario = fundoImobiliarioService.buscarPeloCodigo("FIMO11");
-        assertFundoImobiliario(fundoImobiliario, fundoImobiliarioMock);
+        assertFundoImobiliario(fundoImobiliario.get(), fundoImobiliarioMock);
     }
 
     @Test

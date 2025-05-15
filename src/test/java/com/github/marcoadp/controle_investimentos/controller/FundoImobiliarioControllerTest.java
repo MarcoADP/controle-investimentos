@@ -13,6 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.marcoadp.controle_investimentos.stub.FundoImobiliarioStub.*;
 import static org.mockito.Mockito.when;
@@ -93,7 +94,7 @@ class FundoImobiliarioControllerTest {
     @Test
     void buscarPeloCodigo() throws Exception {
         var fundoImobiliario = getFundoImobiliario();
-        when(fundoImobiliarioService.buscarPeloCodigo(fundoImobiliario.getCodigo())).thenReturn(fundoImobiliario);
+        when(fundoImobiliarioService.buscarPeloCodigo(fundoImobiliario.getCodigo())).thenReturn(Optional.of(fundoImobiliario));
         when(fundoImobiliarioMapper.toFundoImobiliarioResponse(fundoImobiliario)).thenReturn(getFundoImobiliarioResponse());
 
         mockMvc.perform(get("/fundo-imobiliario/codigo/FIMO11"))

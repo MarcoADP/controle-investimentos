@@ -13,6 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.marcoadp.controle_investimentos.stub.BdrStub.*;
 import static org.mockito.Mockito.when;
@@ -92,7 +93,7 @@ class BdrControllerTest {
     @Test
     void buscarPeloCodigo() throws Exception {
         var bdr = getBdr(1L);
-        when(bdrService.buscarPeloCodigo(bdr.getCodigo())).thenReturn(bdr);
+        when(bdrService.buscarPeloCodigo(bdr.getCodigo())).thenReturn(Optional.of(bdr));
         when(bdrMapper.toBdrResponse(bdr)).thenReturn(getBdrResponse());
 
         mockMvc.perform(get("/bdr/codigo/BDRZ32"))

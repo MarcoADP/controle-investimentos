@@ -2,6 +2,7 @@ package com.github.marcoadp.controle_investimentos.controller;
 
 import com.github.marcoadp.controle_investimentos.dto.request.FundoImobiliarioRequest;
 import com.github.marcoadp.controle_investimentos.dto.response.FundoImobiliarioResponse;
+import com.github.marcoadp.controle_investimentos.handler.NotFoundException;
 import com.github.marcoadp.controle_investimentos.mapper.FundoImobiliarioMapper;
 import com.github.marcoadp.controle_investimentos.service.FundoImobiliarioService;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class FundoImobiliarioController {
 
     @GetMapping("/codigo/{codigo}")
     public FundoImobiliarioResponse buscarPeloCodigo(@PathVariable String codigo) {
-        var fundoImobiliario = fundoImobiliarioService.buscarPeloCodigo(codigo);
+        var fundoImobiliario = fundoImobiliarioService.buscarPeloCodigo(codigo).orElseThrow(() -> new NotFoundException("Fundo Imobiliário", codigo));
         return fundoImobiliarioMapper.toFundoImobiliarioResponse(fundoImobiliario);
     }
 

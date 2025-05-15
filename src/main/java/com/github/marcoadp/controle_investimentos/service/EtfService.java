@@ -4,6 +4,7 @@ import com.github.marcoadp.controle_investimentos.dto.request.EtfRequest;
 import com.github.marcoadp.controle_investimentos.entity.Etf;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EtfService {
 
@@ -13,7 +14,7 @@ public interface EtfService {
 
     Etf buscarPeloId(Long id);
 
-    Etf buscarPeloCodigo(String codigo);
+    Optional<Etf> buscarPeloCodigo(String codigo);
 
     List<Etf> buscarPeloTipo(String tipo);
 

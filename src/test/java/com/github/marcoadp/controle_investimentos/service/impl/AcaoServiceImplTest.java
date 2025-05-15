@@ -74,7 +74,7 @@ class AcaoServiceImplTest {
         var acaoMock = getAcao();
         when(acaoRepository.findFirstByCodigo(acaoMock.getCodigo())).thenReturn(Optional.of(acaoMock));
         var acao = acaoService.buscarPeloCodigo("ACAO4");
-        assertAcao(acao, acaoMock);
+        assertAcao(acao.get(), acaoMock);
     }
 
     @Test

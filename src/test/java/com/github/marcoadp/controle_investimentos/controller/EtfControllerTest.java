@@ -13,6 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.marcoadp.controle_investimentos.stub.EtfStub.*;
 import static org.mockito.Mockito.when;
@@ -92,7 +93,7 @@ class EtfControllerTest {
     @Test
     void buscarPeloCodigo() throws Exception {
         var etf = getEtf(1L);
-        when(etfService.buscarPeloCodigo(etf.getCodigo())).thenReturn(etf);
+        when(etfService.buscarPeloCodigo(etf.getCodigo())).thenReturn(Optional.of(etf));
         when(etfMapper.toEtfResponse(etf)).thenReturn(getEtfResponse());
 
         mockMvc.perform(get("/etf/codigo/ETF11"))

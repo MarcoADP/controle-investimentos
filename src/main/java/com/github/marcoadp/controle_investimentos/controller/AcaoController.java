@@ -2,6 +2,7 @@ package com.github.marcoadp.controle_investimentos.controller;
 
 import com.github.marcoadp.controle_investimentos.dto.request.AcaoRequest;
 import com.github.marcoadp.controle_investimentos.dto.response.AcaoResponse;
+import com.github.marcoadp.controle_investimentos.handler.NotFoundException;
 import com.github.marcoadp.controle_investimentos.mapper.AcaoMapper;
 import com.github.marcoadp.controle_investimentos.service.AcaoService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class AcaoController {
 
     @GetMapping("/codigo/{codigo}")
     public AcaoResponse buscarPeloCodigo(@PathVariable String codigo) {
-        var acao = acaoService.buscarPeloCodigo(codigo);
+        var acao = acaoService.buscarPeloCodigo(codigo).orElseThrow(() -> new NotFoundException("Acao", codigo));
         return acaoMapper.toAcaoResponse(acao);
     }
 

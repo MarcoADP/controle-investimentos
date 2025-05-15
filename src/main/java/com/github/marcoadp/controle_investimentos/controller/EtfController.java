@@ -2,6 +2,7 @@ package com.github.marcoadp.controle_investimentos.controller;
 
 import com.github.marcoadp.controle_investimentos.dto.request.EtfRequest;
 import com.github.marcoadp.controle_investimentos.dto.response.EtfResponse;
+import com.github.marcoadp.controle_investimentos.handler.NotFoundException;
 import com.github.marcoadp.controle_investimentos.mapper.EtfMapper;
 import com.github.marcoadp.controle_investimentos.service.EtfService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class EtfController {
 
     @GetMapping("/codigo/{codigo}")
     public EtfResponse buscarPeloCodigo(@PathVariable String codigo) {
-        var etf = etfService.buscarPeloCodigo(codigo);
+        var etf = etfService.buscarPeloCodigo(codigo).orElseThrow(() -> new NotFoundException("Etf", codigo));
         return etfMapper.toEtfResponse(etf);
     }
 
