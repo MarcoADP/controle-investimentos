@@ -9,6 +9,7 @@ import com.github.marcoadp.controle_investimentos.service.MovimentacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -28,6 +29,11 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     public List<Movimentacao> criarEmLote(List<MovimentacaoRequest> movimentacaoRequests) {
         var movimentacoes = movimentacaoRequests.stream().map(movimentacaoMapper::toMovimentacao).toList();
         return movimentacaoRepository.saveAll(movimentacoes);
+    }
+
+    @Override
+    public List<Movimentacao> buscarPeloCodigoEData(String codigo, LocalDate data) {
+        return movimentacaoRepository.findByCodigoAndDataLessThanEqual(codigo, data);
     }
 
     @Override

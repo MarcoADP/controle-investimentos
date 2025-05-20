@@ -3,6 +3,7 @@ package com.github.marcoadp.controle_investimentos.service;
 import com.github.marcoadp.controle_investimentos.dto.request.MovimentacaoRequest;
 import com.github.marcoadp.controle_investimentos.entity.Movimentacao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MovimentacaoService {
@@ -16,4 +17,6 @@ public interface MovimentacaoService {
     void remover(Long id);
 
     List<Movimentacao> criarEmLote(List<MovimentacaoRequest> movimentacaoRequests);
+
+    List<Movimentacao> buscarPeloCodigoEData(String codigo, LocalDate data);
 }
