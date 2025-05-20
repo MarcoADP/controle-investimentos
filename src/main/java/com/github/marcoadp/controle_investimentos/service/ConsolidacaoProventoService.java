@@ -18,4 +18,8 @@ public interface ConsolidacaoProventoService {
     void remover(Long id);
 
     ConsolidacaoProventoAnualResponse buscarConsolidacaoAnualPeloCodigo(String codigo, int ano);
+
+    List<ConsolidacaoProvento> buscarPeloAno(int ano);
+
+    List<ConsolidacaoProvento> buscarTodas();
 }

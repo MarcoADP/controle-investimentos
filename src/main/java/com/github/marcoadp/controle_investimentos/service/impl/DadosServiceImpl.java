@@ -57,7 +57,7 @@ public class DadosServiceImpl implements DadosService {
     public ProventoHistoricoResponse buscarProventoHistorico(Long carteiraId, Integer anoInicio, Integer anoFim) {
         var carteira = carteiraService.buscarPeloId(carteiraId);
         var proventos = carteira.getAtivos().stream()
-                .map(ativo -> criarProventoAnualResponse(ativo.getCodigo(), anoInicio, anoFim))
+                .map(ativo -> criarProventoCodigoResponse(ativo.getCodigo(), anoInicio, anoFim))
                 .sorted(Comparator.comparing(ProventoHistoricoCodigoResponse::tipo).thenComparing(ProventoHistoricoCodigoResponse::codigo))
                 .toList();
         var valorTotal = proventos.stream().map(ProventoHistoricoCodigoResponse::valorTotal)
@@ -65,7 +65,7 @@ public class DadosServiceImpl implements DadosService {
         return new ProventoHistoricoResponse(valorTotal, proventos);
     }
 
-    private ProventoHistoricoCodigoResponse criarProventoAnualResponse(String codigo, Integer anoInicio, Integer anoFim) {
+    private ProventoHistoricoCodigoResponse criarProventoCodigoResponse(String codigo, Integer anoInicio, Integer anoFim) {
         var consolidacoesProvento = consolidacaoProventoService.buscarPeloCodigo(codigo);
         Map<Integer, List<ConsolidacaoProvento>> consolidacoesMap = consolidacoesProvento.stream()
                 .collect(Collectors.groupingBy(ConsolidacaoProvento::getAno));
@@ -102,6 +102,20 @@ public class DadosServiceImpl implements DadosService {
         }
 
         return new AtivoResponse(codigo, "NAO_ENCONTRADO", "NAO_ENCONTRADO");
+    }
+
+    @Override
+    public List<ProventoAnualResponse> buscarProventoAnual(Long carteiraId) {
+        var proventos = new ArrayList<ProventoAnualResponse>();
+        var consolidacoesProvento = consolidacaoProventoService.buscarTodas();
+        var consolidacoesAno = consolidacoesProvento.stream().collect(Collectors.groupingBy(ConsolidacaoProvento::getAno));
+        for (var entry : consolidacoesAno.entrySet()) {
+            var proventoValor = entry.getValue().stream()
+                    .map(ConsolidacaoProvento::getValorTotal)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            proventos.add(new ProventoAnualResponse(entry.getKey(), proventoValor));
+        }
+        return proventos;
     }
 
 }

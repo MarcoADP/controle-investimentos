@@ -130,4 +130,14 @@ public class ConsolidacaoProventoServiceImpl implements ConsolidacaoProventoServ
                 .valorMedio(consolidacoes.stream().map(ConsolidacaoProvento::getValorMedio).reduce(BigDecimal.ZERO, BigDecimal::add))
                 .build();
     }
+
+    @Override
+    public List<ConsolidacaoProvento> buscarPeloAno(int ano) {
+        return consolidacaoProventoRepository.findByAno(ano);
+    }
+
+    @Override
+    public List<ConsolidacaoProvento> buscarTodas() {
+        return consolidacaoProventoRepository.findAll();
+    }
 }
