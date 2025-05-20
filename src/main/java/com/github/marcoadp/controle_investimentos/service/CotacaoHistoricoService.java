@@ -5,6 +5,7 @@ import com.github.marcoadp.controle_investimentos.entity.CotacaoHistorico;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface CotacaoHistoricoService {
 
@@ -17,5 +18,8 @@ public interface CotacaoHistoricoService {
     List<CotacaoHistorico> buscarPeloCodigo(String codigo);
 
     List<CotacaoHistorico> buscarPelaData(LocalDate data);
+
+    Optional<CotacaoHistorico> buscarCotacaoMaisRecente(String codigo);
+
     void remover(Long id);
 }

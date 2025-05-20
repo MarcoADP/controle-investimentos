@@ -22,6 +22,8 @@ public class DadosServiceImpl implements DadosService {
 
     private final ConsolidacaoProventoService consolidacaoProventoService;
 
+    private final CotacaoHistoricoService cotacaoHistoricoService;
+
     private final AcaoService acaoService;
 
     private final BdrService bdrService;
@@ -46,7 +48,9 @@ public class DadosServiceImpl implements DadosService {
         var proventoValor = consolidacoesProvento.stream()
                 .map(ConsolidacaoProvento::getValorTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        return AtivoInformacaoResponse.criar(consolidacao, proventoValor);
+        var cotacaoOpt = cotacaoHistoricoService.buscarCotacaoMaisRecente(codigo);
+        var valorAtual = cotacaoOpt.isPresent() ? cotacaoOpt.get().getValor() : BigDecimal.ZERO;
+        return AtivoInformacaoResponse.criar(consolidacao, proventoValor, valorAtual);
     }
 
     @Override
@@ -54,14 +58,14 @@ public class DadosServiceImpl implements DadosService {
         var carteira = carteiraService.buscarPeloId(carteiraId);
         var proventos = carteira.getAtivos().stream()
                 .map(ativo -> criarProventoAnualResponse(ativo.getCodigo(), anoInicio, anoFim))
-                .sorted(Comparator.comparing(ProventoAnualResponse::tipo).thenComparing(ProventoAnualResponse::codigo))
+                .sorted(Comparator.comparing(ProventoHistoricoCodigoResponse::tipo).thenComparing(ProventoHistoricoCodigoResponse::codigo))
                 .toList();
-        var valorTotal = proventos.stream().map(ProventoAnualResponse::valorTotal)
+        var valorTotal = proventos.stream().map(ProventoHistoricoCodigoResponse::valorTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         return new ProventoHistoricoResponse(valorTotal, proventos);
     }
 
-    private ProventoAnualResponse criarProventoAnualResponse(String codigo, Integer anoInicio, Integer anoFim) {
+    private ProventoHistoricoCodigoResponse criarProventoAnualResponse(String codigo, Integer anoInicio, Integer anoFim) {
         var consolidacoesProvento = consolidacaoProventoService.buscarPeloCodigo(codigo);
         Map<Integer, List<ConsolidacaoProvento>> consolidacoesMap = consolidacoesProvento.stream()
                 .collect(Collectors.groupingBy(ConsolidacaoProvento::getAno));
@@ -76,7 +80,7 @@ public class DadosServiceImpl implements DadosService {
         }
         BigDecimal valorTotal = valorPorAno.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
         var ativo = buscarAtivo(codigo);
-        return new ProventoAnualResponse(codigo, ativo.tipo(), valorTotal, valorPorAno);
+        return new ProventoHistoricoCodigoResponse(codigo, ativo.tipo(), valorTotal, valorPorAno);
     }
 
     private AtivoResponse buscarAtivo(String codigo) {

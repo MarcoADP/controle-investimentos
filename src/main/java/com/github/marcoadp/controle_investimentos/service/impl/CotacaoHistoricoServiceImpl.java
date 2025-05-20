@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Slf4j
@@ -119,6 +120,13 @@ public class CotacaoHistoricoServiceImpl implements CotacaoHistoricoService {
     @Override
     public List<CotacaoHistorico> buscarPelaData(LocalDate data) {
         return cotacaoHistoricoRepository.findByData(data);
+    }
+
+    @Override
+    public Optional<CotacaoHistorico> buscarCotacaoMaisRecente(String codigo) {
+        List<CotacaoHistorico> cotacoes = cotacaoHistoricoRepository.findByCodigo(codigo);
+        return cotacoes.stream().max(Comparator.comparing(CotacaoHistorico::getData));
+
     }
 
     @Override

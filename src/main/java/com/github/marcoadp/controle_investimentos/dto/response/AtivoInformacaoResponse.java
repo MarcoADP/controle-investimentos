@@ -16,13 +16,13 @@ public record AtivoInformacaoResponse(String codigo,
                                       BigDecimal variacao,
                                       BigDecimal rentabilidade ) {
 
-    public static AtivoInformacaoResponse criar(Consolidacao consolidacao, BigDecimal proventoValor) {
+    public static AtivoInformacaoResponse criar(Consolidacao consolidacao, BigDecimal proventoValor, BigDecimal valorAtual) {
         var entrada = new ValorInformacaoResponse(consolidacao.getQuantidadeEntrada(),
                 consolidacao.getValorMedioEntrada(), consolidacao.getValorTotalEntrada());
         var saida = new ValorInformacaoResponse(consolidacao.getQuantidadeSaida(),
                 consolidacao.getValorMedioSaida(), consolidacao.getValorTotalSaida());
         var atual = new ValorInformacaoResponse(entrada.quantidade().subtract(saida.quantidade()),
-                BigDecimal.TEN, entrada.quantidade().multiply(BigDecimal.TEN));
+                valorAtual, entrada.quantidade().multiply(valorAtual));
         var saldo = atual.valorTotal().add(saida.valorTotal()).subtract(entrada.valorTotal());
         var variacao = saldo.divide(entrada.valorTotal(), 5, RoundingMode.HALF_UP);
         var rentabilidade = saldo.add(proventoValor).divide(entrada.valorTotal(), 5, RoundingMode.HALF_UP);
