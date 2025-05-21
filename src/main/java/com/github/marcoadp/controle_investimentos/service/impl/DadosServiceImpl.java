@@ -5,12 +5,17 @@ import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
 import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import com.github.marcoadp.controle_investimentos.service.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.time.format.TextStyle.FULL;
+import static java.time.format.TextStyle.SHORT;
 
 @Service
 @RequiredArgsConstructor
@@ -105,17 +110,33 @@ public class DadosServiceImpl implements DadosService {
     }
 
     @Override
-    public List<ProventoAnualResponse> buscarProventoAnual(Long carteiraId) {
-        var proventos = new ArrayList<ProventoAnualResponse>();
+    public List<ProventoPeriodoResponse> buscarProventoAnual(Long carteiraId) {
+        var proventos = new ArrayList<ProventoPeriodoResponse>();
         var consolidacoesProvento = consolidacaoProventoService.buscarTodas();
         var consolidacoesAno = consolidacoesProvento.stream().collect(Collectors.groupingBy(ConsolidacaoProvento::getAno));
         for (var entry : consolidacoesAno.entrySet()) {
             var proventoValor = entry.getValue().stream()
                     .map(ConsolidacaoProvento::getValorTotal)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
-            proventos.add(new ProventoAnualResponse(entry.getKey(), proventoValor));
+            proventos.add(new ProventoPeriodoResponse(entry.getKey().toString(), proventoValor));
         }
         return proventos;
     }
 
+    @Override
+    public List<ProventoPeriodoResponse> buscarProventoMensal(Long carteiraId, Integer ano) {
+        var proventos = new ArrayList<ProventoPeriodoResponse>();
+        ano = Objects.requireNonNullElse(ano, LocalDate.now().getYear());
+        var consolidacoesProvento = consolidacaoProventoService.buscarPeloAno(ano);
+        var consolidacoesAno = consolidacoesProvento.stream().collect(Collectors.groupingBy(ConsolidacaoProvento::getMes));
+        for (var entry : consolidacoesAno.entrySet()) {
+            var proventoValor = entry.getValue().stream()
+                    .map(ConsolidacaoProvento::getValorTotal)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            var mes = StringUtils.capitalize(Month.of(entry.getKey()).getDisplayName(SHORT, Locale.getDefault()));
+            var periodo = String.format("%s/%s", mes, ano);
+            proventos.add(new ProventoPeriodoResponse(periodo, proventoValor));
+        }
+        return proventos;
+    }
 }

@@ -1,7 +1,7 @@
 package com.github.marcoadp.controle_investimentos.controller;
 
 import com.github.marcoadp.controle_investimentos.dto.response.CarteiraSimplificadaResponse;
-import com.github.marcoadp.controle_investimentos.dto.response.ProventoAnualResponse;
+import com.github.marcoadp.controle_investimentos.dto.response.ProventoPeriodoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoResponse;
 import com.github.marcoadp.controle_investimentos.service.DadosService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +30,16 @@ public class DadosController {
     }
 
     @GetMapping("/provento-anual/{id}")
-    public List<ProventoAnualResponse> buscarProventoAnual(@PathVariable Long id
+    public List<ProventoPeriodoResponse> buscarProventoAnual(@PathVariable Long id
     ) {
         return dadosService.buscarProventoAnual(id);
+    }
+
+    @GetMapping("/provento-mensal/{id}")
+    public List<ProventoPeriodoResponse> buscarProventoMensal(@PathVariable Long id,
+                                                             @RequestParam(required = false) Integer ano
+    ) {
+        return dadosService.buscarProventoMensal(id, ano);
     }
 
 
