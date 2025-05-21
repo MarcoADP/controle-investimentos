@@ -29,6 +29,12 @@ public class ProventoController {
         return proventos.stream().map(proventoMapper::toProventoResponse).toList();
     }
 
+    @GetMapping
+    public List<ProventoResponse>  buscarTodos() {
+        var proventos = proventoService.buscarTodos();
+        return proventos.stream().map(proventoMapper::toProventoResponse).toList();
+    }
+
     @GetMapping("/{id}")
     public ProventoResponse buscarPeloId(@PathVariable Long id) {
         var provento = proventoService.buscarPeloId(id);

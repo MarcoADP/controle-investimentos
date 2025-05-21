@@ -10,6 +10,7 @@ import com.github.marcoadp.controle_investimentos.service.ProventoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -45,6 +46,13 @@ public class ProventoServiceImpl implements ProventoService {
     public List<Provento> buscarPeloTipoProvento(String tipoProvento) {
         var tipoProventoEnum = TipoProventoEnum.getTipoProventoEnumByDescricao(tipoProvento);
         return proventoRepository.findByTipoProvento(tipoProventoEnum);
+    }
+
+    @Override
+    public List<Provento> buscarTodos() {
+        return proventoRepository.findAll().stream()
+                .sorted(Comparator.comparing(Provento::getDataPagamento).reversed())
+                .toList();
     }
 
     @Override
