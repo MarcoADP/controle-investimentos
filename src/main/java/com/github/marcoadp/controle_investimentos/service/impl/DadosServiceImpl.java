@@ -2,6 +2,7 @@ package com.github.marcoadp.controle_investimentos.service.impl;
 
 import com.github.marcoadp.controle_investimentos.dto.response.*;
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
+import com.github.marcoadp.controle_investimentos.entity.Movimentacao;
 import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import com.github.marcoadp.controle_investimentos.service.*;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -138,5 +140,12 @@ public class DadosServiceImpl implements DadosService {
             proventos.add(new ProventoPeriodoResponse(periodo, proventoValor));
         }
         return proventos;
+    }
+
+    @Override
+    public DadosResumoResponse buscarResumo(Long carteiraId) {
+        var carteira = buscarCarteiraSimplificada(carteiraId);
+        var proventosPorAno = buscarProventoAnual(carteiraId);
+        return DadosResumoResponse.calcular(carteira.ativos(), proventosPorAno);
     }
 }
