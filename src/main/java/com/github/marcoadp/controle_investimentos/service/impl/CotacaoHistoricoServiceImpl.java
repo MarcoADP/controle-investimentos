@@ -133,4 +133,16 @@ public class CotacaoHistoricoServiceImpl implements CotacaoHistoricoService {
     public void remover(Long id) {
         cotacaoHistoricoRepository.deleteById(id);
     }
+
+    @Override
+    public List<CotacaoHistorico> buscarCotacaoMaisProxima(LocalDate data) {
+        var cotacoes = cotacaoHistoricoRepository.findMaisProximaPorData(data);
+        if (cotacoes.isEmpty()) {
+            return List.of();
+        }
+        var dataAlvo = cotacoes.getFirst().getData();
+        return cotacoes.stream()
+                .filter(cotacaoHistorico -> cotacaoHistorico.getData().equals(dataAlvo))
+                .toList();
+    }
 }

@@ -22,4 +22,6 @@ public interface CotacaoHistoricoService {
     Optional<CotacaoHistorico> buscarCotacaoMaisRecente(String codigo);
 
     void remover(Long id);
+
+    List<CotacaoHistorico> buscarCotacaoMaisProxima(LocalDate data);
 }
