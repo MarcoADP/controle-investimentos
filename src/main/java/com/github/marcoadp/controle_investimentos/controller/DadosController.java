@@ -4,7 +4,8 @@ import com.github.marcoadp.controle_investimentos.dto.response.CarteiraSimplific
 import com.github.marcoadp.controle_investimentos.dto.response.DadosResumoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ProventoPeriodoResponse;
-import com.github.marcoadp.controle_investimentos.service.DadosService;
+import com.github.marcoadp.controle_investimentos.service.CarteiraDadosService;
+import com.github.marcoadp.controle_investimentos.service.ProventoDadosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +16,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DadosController {
 
-    private final DadosService dadosService;
+    private final CarteiraDadosService carteiraDadosService;
+
+    private final ProventoDadosService proventoDadosService;
 
     @GetMapping("/resumo/{id}")
     public DadosResumoResponse buscarResumo(@PathVariable Long id) {
-        return dadosService.buscarResumo(id);
+        return carteiraDadosService.buscarResumo(id);
     }
 
     @GetMapping("/carteira-simplificada/{id}")
     public CarteiraSimplificadaResponse buscarCarteiraSimplificada(@PathVariable Long id) {
-        return dadosService.buscarCarteiraSimplificada(id);
+        return carteiraDadosService.buscarCarteiraSimplificada(id);
     }
 
     @GetMapping("/provento-historico/{id}")
@@ -32,20 +35,20 @@ public class DadosController {
                                                              @RequestParam(required = false) Integer anoInicio,
                                                              @RequestParam(required = false) Integer anoFim
     ) {
-        return dadosService.buscarProventoHistorico(id, anoInicio, anoFim);
+        return proventoDadosService.buscarProventoHistorico(id, anoInicio, anoFim);
     }
 
     @GetMapping("/provento-anual/{id}")
     public List<ProventoPeriodoResponse> buscarProventoAnual(@PathVariable Long id
     ) {
-        return dadosService.buscarProventoAnual(id);
+        return proventoDadosService.buscarProventoAnual(id);
     }
 
     @GetMapping("/provento-mensal/{id}")
     public List<ProventoPeriodoResponse> buscarProventoMensal(@PathVariable Long id,
                                                              @RequestParam(required = false) Integer ano
     ) {
-        return dadosService.buscarProventoMensal(id, ano);
+        return proventoDadosService.buscarProventoMensal(id, ano);
     }
 
 

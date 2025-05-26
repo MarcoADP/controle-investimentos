@@ -1,8 +1,10 @@
 package com.github.marcoadp.controle_investimentos.service.impl;
 
-import com.github.marcoadp.controle_investimentos.dto.response.*;
+import com.github.marcoadp.controle_investimentos.dto.response.AtivoResponse;
+import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoCodigoResponse;
+import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoResponse;
+import com.github.marcoadp.controle_investimentos.dto.response.ProventoPeriodoResponse;
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
-import com.github.marcoadp.controle_investimentos.entity.Movimentacao;
 import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
 import com.github.marcoadp.controle_investimentos.service.*;
 import lombok.RequiredArgsConstructor;
@@ -10,26 +12,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.time.format.TextStyle.FULL;
 import static java.time.format.TextStyle.SHORT;
 
 @Service
 @RequiredArgsConstructor
-public class DadosServiceImpl implements DadosService {
+public class ProventosDadosServiceImpl implements ProventoDadosService {
 
     private final CarteiraService carteiraService;
 
-    private final ConsolidacaoService consolidacaoService;
-
     private final ConsolidacaoProventoService consolidacaoProventoService;
-
-    private final CotacaoHistoricoService cotacaoHistoricoService;
 
     private final AcaoService acaoService;
 
@@ -38,27 +34,6 @@ public class DadosServiceImpl implements DadosService {
     private final EtfService etfService;
 
     private final FundoImobiliarioService fundoImobiliarioService;
-
-    @Override
-    public CarteiraSimplificadaResponse buscarCarteiraSimplificada(Long carteiraId) {
-        var carteira = carteiraService.buscarPeloId(carteiraId);
-        var ativos = carteira.getAtivos().stream()
-                .map(ativo -> criarAtivoInformacaoResponse(ativo.getCodigo()))
-                .sorted(Comparator.comparing(AtivoInformacaoResponse::tipo).thenComparing(AtivoInformacaoResponse::codigo))
-                .toList();
-        return new CarteiraSimplificadaResponse(ativos);
-    }
-
-    private AtivoInformacaoResponse criarAtivoInformacaoResponse(String codigo) {
-        var consolidacao = consolidacaoService.buscarPeloCodigo(codigo);
-        var consolidacoesProvento = consolidacaoProventoService.buscarPeloCodigo(codigo);
-        var proventoValor = consolidacoesProvento.stream()
-                .map(ConsolidacaoProvento::getValorTotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        var cotacaoOpt = cotacaoHistoricoService.buscarCotacaoMaisRecente(codigo);
-        var valorAtual = cotacaoOpt.isPresent() ? cotacaoOpt.get().getValor() : BigDecimal.ZERO;
-        return AtivoInformacaoResponse.criar(consolidacao, proventoValor, valorAtual);
-    }
 
     @Override
     public ProventoHistoricoResponse buscarProventoHistorico(Long carteiraId, Integer anoInicio, Integer anoFim) {
@@ -140,12 +115,5 @@ public class DadosServiceImpl implements DadosService {
             proventos.add(new ProventoPeriodoResponse(periodo, proventoValor));
         }
         return proventos;
-    }
-
-    @Override
-    public DadosResumoResponse buscarResumo(Long carteiraId) {
-        var carteira = buscarCarteiraSimplificada(carteiraId);
-        var proventosPorAno = buscarProventoAnual(carteiraId);
-        return DadosResumoResponse.calcular(carteira.ativos(), proventosPorAno);
     }
 }

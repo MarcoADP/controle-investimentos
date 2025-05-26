@@ -1,15 +1,11 @@
 package com.github.marcoadp.controle_investimentos.service;
 
-import com.github.marcoadp.controle_investimentos.dto.response.CarteiraSimplificadaResponse;
-import com.github.marcoadp.controle_investimentos.dto.response.DadosResumoResponse;
-import com.github.marcoadp.controle_investimentos.dto.response.ProventoPeriodoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoResponse;
+import com.github.marcoadp.controle_investimentos.dto.response.ProventoPeriodoResponse;
 
 import java.util.List;
 
-public interface DadosService {
-
-    CarteiraSimplificadaResponse buscarCarteiraSimplificada(Long carteiraId);
+public interface ProventoDadosService {
 
     ProventoHistoricoResponse buscarProventoHistorico(Long carteiraId, Integer anoInicio, Integer anoFim);
 
@@ -17,5 +13,4 @@ public interface DadosService {
 
     List<ProventoPeriodoResponse> buscarProventoMensal(Long carteiraId, Integer ano);
 
-    DadosResumoResponse buscarResumo(Long carteiraId);
 }
