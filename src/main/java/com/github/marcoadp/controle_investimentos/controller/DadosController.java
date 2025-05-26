@@ -1,9 +1,6 @@
 package com.github.marcoadp.controle_investimentos.controller;
 
-import com.github.marcoadp.controle_investimentos.dto.response.CarteiraSimplificadaResponse;
-import com.github.marcoadp.controle_investimentos.dto.response.DadosResumoResponse;
-import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoResponse;
-import com.github.marcoadp.controle_investimentos.dto.response.ProventoPeriodoResponse;
+import com.github.marcoadp.controle_investimentos.dto.response.*;
 import com.github.marcoadp.controle_investimentos.service.CarteiraDadosService;
 import com.github.marcoadp.controle_investimentos.service.ProventoDadosService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +25,11 @@ public class DadosController {
     @GetMapping("/carteira-simplificada/{id}")
     public CarteiraSimplificadaResponse buscarCarteiraSimplificada(@PathVariable Long id) {
         return carteiraDadosService.buscarCarteiraSimplificada(id);
+    }
+
+    @GetMapping("/patrimonio/evolucao/{id}")
+    public List<PatrimonioEvolucaoResponse> calcularEvolucaoPatrimonio(@PathVariable Long id) {
+        return carteiraDadosService.buscarPatrimonioEvolucao(id);
     }
 
     @GetMapping("/provento-historico/{id}")
