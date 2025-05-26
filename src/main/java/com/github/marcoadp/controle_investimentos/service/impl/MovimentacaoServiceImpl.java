@@ -2,6 +2,7 @@ package com.github.marcoadp.controle_investimentos.service.impl;
 
 import com.github.marcoadp.controle_investimentos.dto.request.MovimentacaoRequest;
 import com.github.marcoadp.controle_investimentos.entity.Movimentacao;
+import com.github.marcoadp.controle_investimentos.enums.OperacaoEnum;
 import com.github.marcoadp.controle_investimentos.handler.NotFoundException;
 import com.github.marcoadp.controle_investimentos.mapper.MovimentacaoMapper;
 import com.github.marcoadp.controle_investimentos.repository.MovimentacaoRepository;
@@ -34,6 +35,11 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     @Override
     public List<Movimentacao> buscarPeloCodigoEData(String codigo, LocalDate data) {
         return movimentacaoRepository.findByCodigoAndDataLessThanEqual(codigo, data);
+    }
+
+    @Override
+    public List<Movimentacao> buscarPelaOperacao(OperacaoEnum operacao) {
+        return movimentacaoRepository.findByOperacao(operacao);
     }
 
     @Override
