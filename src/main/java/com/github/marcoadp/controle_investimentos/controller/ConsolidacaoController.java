@@ -16,9 +16,21 @@ public class ConsolidacaoController {
     private final ConsolidacaoService consolidacaoService;
     private final ConsolidacaoMapper consolidacaoMapper;
 
-    @PostMapping("/carteiras")
-    public List<ConsolidacaoResponse> consolidarCarteiras() {
-        var consolidacoes = consolidacaoService.consolidarCarteiras();
+    @PostMapping("/all")
+    public List<ConsolidacaoResponse> consolidar() {
+        var consolidacoes = consolidacaoService.consolidarTodasMovimentacoes();
+        return consolidacoes.stream().map(consolidacaoMapper::toConsolidacaoResponse).toList();
+    }
+
+    @PostMapping("ano/{ano}/mes/{mes}")
+    public List<ConsolidacaoResponse> consolidarAtivoPorData(@PathVariable Integer ano, @PathVariable Integer mes) {
+        var consolidacoes = consolidacaoService.consolidarAtivoPorData(mes, ano);
+        return consolidacoes.stream().map(consolidacaoMapper::toConsolidacaoResponse).toList();
+    }
+
+    @PostMapping("/codigo/{codigo}")
+    public List<ConsolidacaoResponse> consolidarPorCodigo(@PathVariable String codigo) {
+        var consolidacoes = consolidacaoService.consolidarAtivoPorAno(codigo);
         return consolidacoes.stream().map(consolidacaoMapper::toConsolidacaoResponse).toList();
     }
 

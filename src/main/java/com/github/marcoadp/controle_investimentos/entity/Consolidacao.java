@@ -24,6 +24,12 @@ public class Consolidacao {
     @Column
     private String codigo;
 
+    @Column
+    private Integer mes;
+
+    @Column
+    private Integer ano;
+
     @Setter
     @Column(name = "tipo_ativo")
     @Convert(converter = TipoAtivoEnumConverter.class)

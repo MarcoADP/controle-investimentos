@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 public record ConsolidacaoResponse(
         String codigo,
         String tipoAtivo,
+        Integer mes,
+        Integer ano,
         BigDecimal quantidadeEntrada,
         BigDecimal valorMedioEntrada,
         BigDecimal valorTotalEntrada,

@@ -43,6 +43,11 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     @Override
+    public List<Movimentacao> buscarTodas() {
+        return movimentacaoRepository.findAll();
+    }
+
+    @Override
     public Movimentacao buscarPeloId(Long id) {
         return movimentacaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Movimentação", id));
     }

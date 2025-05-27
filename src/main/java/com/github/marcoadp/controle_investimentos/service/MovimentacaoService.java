@@ -22,4 +22,6 @@ public interface MovimentacaoService {
     List<Movimentacao> buscarPeloCodigoEData(String codigo, LocalDate data);
 
     List<Movimentacao> buscarPelaOperacao(OperacaoEnum operacao);
+
+    List<Movimentacao> buscarTodas();
 }

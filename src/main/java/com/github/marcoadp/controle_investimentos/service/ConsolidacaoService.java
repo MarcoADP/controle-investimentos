@@ -6,7 +6,11 @@ import java.util.List;
 
 public interface ConsolidacaoService {
 
-    List<Consolidacao> consolidarCarteiras();
+    List<Consolidacao> consolidarTodasMovimentacoes();
+
+    List<Consolidacao> consolidarAtivoPorAno(String codigo);
+
+    List<Consolidacao> consolidarAtivoPorData(Integer mes, Integer ano);
 
     Consolidacao buscarPeloId(Long id);
 
