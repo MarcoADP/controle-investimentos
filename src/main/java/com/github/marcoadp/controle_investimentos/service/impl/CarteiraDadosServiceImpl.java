@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static java.time.format.TextStyle.SHORT;
 
@@ -68,10 +65,11 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
     }
 
     @Override
-    public List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Long carteiraId) {
+    public List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Integer meses) {
         var patrimonios = new ArrayList<PatrimonioEvolucaoResponse>();
         var movimentacoes = movimentacaoService.buscarPelaOperacao(OperacaoEnum.ENTRADA);
-        for (int i = 12; i >= 0; i--) {
+        meses = Objects.requireNonNullElse(meses, 12);
+        for (int i = meses; i >= 0; i--) {
             var data = LocalDate.now().minusMonths(i).with(TemporalAdjusters.lastDayOfMonth());
             var cotacoes = cotacaoHistoricoService.buscarCotacaoMaisProxima(data);
             var valor = cotacoes.stream().map(CotacaoHistorico::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
