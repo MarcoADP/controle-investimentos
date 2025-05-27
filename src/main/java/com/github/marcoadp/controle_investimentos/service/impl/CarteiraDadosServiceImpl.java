@@ -4,6 +4,7 @@ import com.github.marcoadp.controle_investimentos.dto.response.AtivoInformacaoRe
 import com.github.marcoadp.controle_investimentos.dto.response.CarteiraSimplificadaResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.DadosResumoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.PatrimonioEvolucaoResponse;
+import com.github.marcoadp.controle_investimentos.entity.CarteiraAtivo;
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
 import com.github.marcoadp.controle_investimentos.entity.CotacaoHistorico;
 import com.github.marcoadp.controle_investimentos.entity.Movimentacao;
@@ -65,13 +66,19 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
     }
 
     @Override
-    public List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Integer meses) {
+    public List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Long carteiraId, Integer meses) {
         var patrimonios = new ArrayList<PatrimonioEvolucaoResponse>();
-        var movimentacoes = movimentacaoService.buscarPelaOperacao(OperacaoEnum.ENTRADA);
+        var carteira = carteiraService.buscarPeloId(carteiraId);
+        var codigos = carteira.getAtivos().stream().map(CarteiraAtivo::getCodigo).toList();
+        var movimentacoes = movimentacaoService.buscarPelaOperacao(OperacaoEnum.ENTRADA).stream()
+                .filter(movimentacao -> codigos.contains(movimentacao.getCodigo()))
+                .toList();
         meses = Objects.requireNonNullElse(meses, 12);
         for (int i = meses; i >= 0; i--) {
             var data = LocalDate.now().minusMonths(i).with(TemporalAdjusters.lastDayOfMonth());
-            var cotacoes = cotacaoHistoricoService.buscarCotacaoMaisProxima(data);
+            var cotacoes = cotacaoHistoricoService.buscarCotacaoMaisProxima(data).stream()
+                    .filter(cotacao -> codigos.contains(cotacao.getCodigo()))
+                    .toList();
             var valor = cotacoes.stream().map(CotacaoHistorico::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
             var movFiltered = movimentacoes.stream().filter(movimentacao -> !movimentacao.getData().isAfter(data)).toList();
             var valorInvestido = movFiltered.stream().map(Movimentacao::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);

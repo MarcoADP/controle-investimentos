@@ -27,9 +27,10 @@ public class DadosController {
         return carteiraDadosService.buscarCarteiraSimplificada(id);
     }
 
-    @GetMapping("/patrimonio/evolucao")
-    public List<PatrimonioEvolucaoResponse> calcularEvolucaoPatrimonio(@RequestParam(required = false) Integer meses) {
-        return carteiraDadosService.buscarPatrimonioEvolucao(meses);
+    @GetMapping("/patrimonio/evolucao/{id}")
+    public List<PatrimonioEvolucaoResponse> calcularEvolucaoPatrimonio(@PathVariable Long id,
+                                                                       @RequestParam(required = false) Integer meses) {
+        return carteiraDadosService.buscarPatrimonioEvolucao(id, meses);
     }
 
     @GetMapping("/provento-historico/{id}")

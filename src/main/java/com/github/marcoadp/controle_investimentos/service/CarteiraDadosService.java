@@ -12,5 +12,5 @@ public interface CarteiraDadosService {
 
     DadosResumoResponse buscarResumo(Long carteiraId);
 
-    List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Integer meses);
+    List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Long carteiraId, Integer meses);
 }
