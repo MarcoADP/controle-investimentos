@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -120,12 +121,25 @@ public class ConsolidacaoServiceImpl implements ConsolidacaoService {
 
     @Override
     public Consolidacao buscarPeloId(Long id) {
-        return consolidacaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Movimentação", id));
+        return consolidacaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Consolidação", id));
     }
 
     @Override
     public Consolidacao buscarPeloCodigo(String codigo) {
-        return consolidacaoRepository.findFirstByCodigo(codigo).orElseThrow(() -> new NotFoundException("Movimentação", codigo));
+        return consolidacaoRepository.findFirstByCodigo(codigo)
+                .orElseThrow(() -> new NotFoundException("Consolidação", codigo));
+    }
+
+    @Override
+    public Consolidacao buscarUltimaConsolidacao(String codigo) {
+        var consolidacoes = consolidacaoRepository.findByCodigo(codigo);
+        if (consolidacoes.isEmpty()) {
+            throw new NotFoundException("Consolidação", codigo);
+        }
+        return consolidacoes.stream()
+                .max(Comparator.comparingInt(Consolidacao::getAno)
+                        .thenComparingInt(Consolidacao::getMes))
+                .orElseThrow(() -> new NotFoundException("Consolidação", codigo));
     }
 
     @Override

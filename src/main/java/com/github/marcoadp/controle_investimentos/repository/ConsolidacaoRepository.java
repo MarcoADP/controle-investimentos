@@ -15,4 +15,6 @@ public interface ConsolidacaoRepository extends JpaRepository<Consolidacao, Long
     Optional<Consolidacao> findFirstByCodigoAndMesAndAno(String codigo, int mes, int ano);
 
     List<Consolidacao> findByMesAndAno(Integer mes, Integer ano);
+
+    List<Consolidacao> findByCodigo(String codigo);
 }

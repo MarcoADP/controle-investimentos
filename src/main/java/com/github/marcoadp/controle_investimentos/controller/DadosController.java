@@ -33,6 +33,11 @@ public class DadosController {
         return carteiraDadosService.buscarPatrimonioEvolucao(id, meses);
     }
 
+    @GetMapping("/carteira/proporcao/{id}")
+    public List<CarteiraProporcaoResponse> buscarCarteiraProporcao(@PathVariable Long id) {
+        return carteiraDadosService.buscarProporcaoCarteira(id);
+    }
+
     @GetMapping("/provento-historico/{id}")
     public ProventoHistoricoResponse buscarProventoHistorico(@PathVariable Long id,
                                                              @RequestParam(required = false) Integer anoInicio,

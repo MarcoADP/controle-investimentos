@@ -19,4 +19,6 @@ public interface ConsolidacaoService {
     List<Consolidacao> buscarPelaData(Integer mes, Integer ano);
 
     void remover(Long id);
+
+    Consolidacao buscarUltimaConsolidacao(String codigo);
 }

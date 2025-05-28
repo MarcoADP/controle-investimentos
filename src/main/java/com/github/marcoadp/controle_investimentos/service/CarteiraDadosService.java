@@ -1,5 +1,6 @@
 package com.github.marcoadp.controle_investimentos.service;
 
+import com.github.marcoadp.controle_investimentos.dto.response.CarteiraProporcaoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.CarteiraSimplificadaResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.DadosResumoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.PatrimonioEvolucaoResponse;
@@ -13,4 +14,7 @@ public interface CarteiraDadosService {
     DadosResumoResponse buscarResumo(Long carteiraId);
 
     List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Long carteiraId, Integer meses);
+
+    List<CarteiraProporcaoResponse> buscarProporcaoCarteira(Long carteiraId);
+
 }
