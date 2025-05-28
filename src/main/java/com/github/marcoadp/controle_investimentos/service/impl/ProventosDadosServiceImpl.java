@@ -1,12 +1,13 @@
 package com.github.marcoadp.controle_investimentos.service.impl;
 
-import com.github.marcoadp.controle_investimentos.dto.response.AtivoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoCodigoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ProventoHistoricoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.ProventoPeriodoResponse;
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
-import com.github.marcoadp.controle_investimentos.enums.TipoAtivoEnum;
-import com.github.marcoadp.controle_investimentos.service.*;
+import com.github.marcoadp.controle_investimentos.service.AtivoService;
+import com.github.marcoadp.controle_investimentos.service.CarteiraService;
+import com.github.marcoadp.controle_investimentos.service.ConsolidacaoProventoService;
+import com.github.marcoadp.controle_investimentos.service.ProventoDadosService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -27,13 +28,7 @@ public class ProventosDadosServiceImpl implements ProventoDadosService {
 
     private final ConsolidacaoProventoService consolidacaoProventoService;
 
-    private final AcaoService acaoService;
-
-    private final BdrService bdrService;
-
-    private final EtfService etfService;
-
-    private final FundoImobiliarioService fundoImobiliarioService;
+    private final AtivoService ativoService;
 
     @Override
     public ProventoHistoricoResponse buscarProventoHistorico(Long carteiraId, Integer anoInicio, Integer anoFim) {
@@ -61,29 +56,8 @@ public class ProventosDadosServiceImpl implements ProventoDadosService {
             valorPorAno.put(ano, valorTotal);
         }
         BigDecimal valorTotal = valorPorAno.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        var ativo = buscarAtivo(codigo);
+        var ativo = ativoService.buscarAtivo(codigo);
         return new ProventoHistoricoCodigoResponse(codigo, ativo.tipo(), valorTotal, valorPorAno);
-    }
-
-    private AtivoResponse buscarAtivo(String codigo) {
-        var acaoOpt = acaoService.buscarPeloCodigo(codigo);
-        if (acaoOpt.isPresent()) {
-            return new AtivoResponse(codigo, TipoAtivoEnum.ACAO.getDescricao(), acaoOpt.get().getSetor().getNome());
-        }
-        var bdrOpt = bdrService.buscarPeloCodigo(codigo);
-        if (bdrOpt.isPresent()) {
-            return new AtivoResponse(codigo, TipoAtivoEnum.BDR.getDescricao(), bdrOpt.get().getSetor());
-        }
-        var etfOpt = etfService.buscarPeloCodigo(codigo);
-        if (etfOpt.isPresent()) {
-            return new AtivoResponse(codigo, TipoAtivoEnum.ETF.getDescricao(), etfOpt.get().getTipo());
-        }
-        var fiOpt = fundoImobiliarioService.buscarPeloCodigo(codigo);
-        if (fiOpt.isPresent()) {
-            return new AtivoResponse(codigo, TipoAtivoEnum.FI.getDescricao(), fiOpt.get().getCodigo());
-        }
-
-        return new AtivoResponse(codigo, "NAO_ENCONTRADO", "NAO_ENCONTRADO");
     }
 
     @Override
