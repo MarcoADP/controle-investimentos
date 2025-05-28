@@ -4,11 +4,9 @@ import com.github.marcoadp.controle_investimentos.dto.response.AtivoInformacaoRe
 import com.github.marcoadp.controle_investimentos.dto.response.CarteiraSimplificadaResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.DadosResumoResponse;
 import com.github.marcoadp.controle_investimentos.dto.response.PatrimonioEvolucaoResponse;
-import com.github.marcoadp.controle_investimentos.entity.CarteiraAtivo;
+import com.github.marcoadp.controle_investimentos.entity.Consolidacao;
 import com.github.marcoadp.controle_investimentos.entity.ConsolidacaoProvento;
 import com.github.marcoadp.controle_investimentos.entity.CotacaoHistorico;
-import com.github.marcoadp.controle_investimentos.entity.Movimentacao;
-import com.github.marcoadp.controle_investimentos.enums.OperacaoEnum;
 import com.github.marcoadp.controle_investimentos.service.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -34,8 +32,6 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
     private final CotacaoHistoricoService cotacaoHistoricoService;
 
     private final ProventoDadosService proventoDadosService;
-
-    private final MovimentacaoService movimentacaoService;
 
     @Override
     public CarteiraSimplificadaResponse buscarCarteiraSimplificada(Long carteiraId) {
@@ -68,20 +64,19 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
     @Override
     public List<PatrimonioEvolucaoResponse> buscarPatrimonioEvolucao(Long carteiraId, Integer meses) {
         var patrimonios = new ArrayList<PatrimonioEvolucaoResponse>();
-        var carteira = carteiraService.buscarPeloId(carteiraId);
-        var codigos = carteira.getAtivos().stream().map(CarteiraAtivo::getCodigo).toList();
-        var movimentacoes = movimentacaoService.buscarPelaOperacao(OperacaoEnum.ENTRADA).stream()
-                .filter(movimentacao -> codigos.contains(movimentacao.getCodigo()))
-                .toList();
         meses = Objects.requireNonNullElse(meses, 12);
         for (int i = meses; i >= 0; i--) {
             var data = LocalDate.now().minusMonths(i).with(TemporalAdjusters.lastDayOfMonth());
-            var cotacoes = cotacaoHistoricoService.buscarCotacaoMaisProxima(data).stream()
-                    .filter(cotacao -> codigos.contains(cotacao.getCodigo()))
-                    .toList();
+            var cotacoes = cotacaoHistoricoService.buscarCotacaoMaisProxima(data).stream().toList();
             var valor = cotacoes.stream().map(CotacaoHistorico::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
-            var movFiltered = movimentacoes.stream().filter(movimentacao -> !movimentacao.getData().isAfter(data)).toList();
-            var valorInvestido = movFiltered.stream().map(Movimentacao::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+            var consolidacoes = consolidacaoService.buscarPelaData(data.getMonthValue(), data.getYear());
+            var valorInvestido = consolidacoes.stream()
+                    .map(Consolidacao::getValorTotalEntrada)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            var valorVenda = consolidacoes.stream()
+                    .map(Consolidacao::getValorTotalSaida)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            valor = valor.add(valorVenda);
             var saldo = valor.subtract(valorInvestido);
             var mes = StringUtils.capitalize(data.getMonth().getDisplayName(SHORT, Locale.getDefault()));
             var periodo = String.format("%s/%s", mes, data.getYear());
@@ -89,4 +84,5 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
         }
         return patrimonios;
     }
+
 }

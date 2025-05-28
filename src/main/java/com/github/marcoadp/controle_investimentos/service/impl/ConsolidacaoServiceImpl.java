@@ -129,6 +129,11 @@ public class ConsolidacaoServiceImpl implements ConsolidacaoService {
     }
 
     @Override
+    public List<Consolidacao> buscarPelaData(Integer mes, Integer ano) {
+        return consolidacaoRepository.findByMesAndAno(mes, ano);
+    }
+
+    @Override
     public void remover(Long id) {
         consolidacaoRepository.deleteById(id);
     }
