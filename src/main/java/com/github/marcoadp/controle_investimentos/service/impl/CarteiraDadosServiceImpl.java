@@ -32,8 +32,6 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
 
     private final ProventoDadosService proventoDadosService;
 
-    private final AtivoService ativoService;
-
     @Override
     public CarteiraSimplificadaResponse buscarCarteiraSimplificada(Long carteiraId) {
         var carteira = carteiraService.buscarPeloId(carteiraId);
@@ -88,10 +86,7 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
 
     @Override
     public List<CarteiraProporcaoResponse> buscarProporcaoCarteira(Long carteiraId) {
-        var carteira = carteiraService.buscarPeloId(carteiraId);
-        var ativos = carteira.getAtivos().stream()
-                .map(ativo -> criarAtivoInformacaoResponse(ativo.getCodigo()))
-                .toList();
+        var ativos = getAtivoInformacaoResponses(carteiraId);
         var valorTotal = somarValorAtivos(ativos);
         var ativosPorTipo = ativos.stream().collect(Collectors.groupingBy(AtivoInformacaoResponse::tipo));
         var carteiraProporcao = new ArrayList<CarteiraProporcaoResponse>();
@@ -103,10 +98,33 @@ public class CarteiraDadosServiceImpl implements CarteiraDadosService {
         return carteiraProporcao;
     }
 
+    private List<AtivoInformacaoResponse> getAtivoInformacaoResponses(Long carteiraId) {
+        var carteira = carteiraService.buscarPeloId(carteiraId);
+        return carteira.getAtivos().stream()
+                .map(ativo -> criarAtivoInformacaoResponse(ativo.getCodigo()))
+                .toList();
+    }
+
     private static BigDecimal somarValorAtivos(List<AtivoInformacaoResponse> ativos) {
         return ativos.stream()
                 .map(ativo -> ativo.atual().valorTotal())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public List<CarteiraProporcaoResponse> buscarProporcaoAtivos(Long carteiraId, List<String> tipos) {
+        var ativos = getAtivoInformacaoResponses(carteiraId);
+        if (tipos != null && !tipos.isEmpty()) {
+            ativos = ativos.stream().filter(ativo -> tipos.contains(ativo.tipo())).toList();
+        }
+        var valorTotal = somarValorAtivos(ativos);
+        var carteiraProporcao = new ArrayList<CarteiraProporcaoResponse>();
+        for (var ativo: ativos) {
+            var valor = ativo.atual().valorTotal();
+            var proporcao = valor.divide(valorTotal, 5, RoundingMode.HALF_UP);
+            carteiraProporcao.add(new CarteiraProporcaoResponse(ativo.codigo(), valor, proporcao));
+        }
+        return carteiraProporcao;
     }
 
 }

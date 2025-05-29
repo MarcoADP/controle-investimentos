@@ -17,4 +17,5 @@ public interface CarteiraDadosService {
 
     List<CarteiraProporcaoResponse> buscarProporcaoCarteira(Long carteiraId);
 
+    List<CarteiraProporcaoResponse> buscarProporcaoAtivos(Long carteiraId, List<String> tipos);
 }
