@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ConsolidacaoRepository extends JpaRepository<Consolidacao, Long> {
 
-    Optional<Consolidacao> findFirstByCodigo(String codigo);
+    Optional<Consolidacao> findFirstByCodigoOrderByAnoDescMesDesc(String codigo);
 
     Optional<Consolidacao> findFirstByCodigoAndMesAndAno(String codigo, int mes, int ano);
 

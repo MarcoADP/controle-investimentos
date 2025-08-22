@@ -126,7 +126,7 @@ public class ConsolidacaoServiceImpl implements ConsolidacaoService {
 
     @Override
     public Consolidacao buscarPeloCodigo(String codigo) {
-        return consolidacaoRepository.findFirstByCodigo(codigo)
+        return consolidacaoRepository.findFirstByCodigoOrderByAnoDescMesDesc(codigo)
                 .orElseThrow(() -> new NotFoundException("Consolidação", codigo));
     }
 

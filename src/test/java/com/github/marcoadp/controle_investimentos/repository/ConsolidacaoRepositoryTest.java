@@ -35,7 +35,7 @@ class ConsolidacaoRepositoryTest {
     @Test
     void findByCodigo() {
         var consolidacao = criarConsolidacao();
-        var consolidacaoOpt = consolidacaoRepository.findFirstByCodigo(consolidacao.getCodigo());
+        var consolidacaoOpt = consolidacaoRepository.findFirstByCodigoOrderByAnoDescMesDesc(consolidacao.getCodigo());
         assertThat(consolidacaoOpt).isPresent();
         assertConsolidacao(consolidacaoOpt.get());
     }
